@@ -65,14 +65,19 @@ void move(long positions[])
 }
 
 void loop() { 
-  long moveForward[] = {0, -STEPS_PER_REVOLUTION, 0, STEPS_PER_REVOLUTION};
-  long moveBackward[] = {0, STEPS_PER_REVOLUTION, 0, -STEPS_PER_REVOLUTION};
-  long moveLeft[] = {-STEPS_PER_REVOLUTION, 0, STEPS_PER_REVOLUTION, 0};
-  long moveRight[] = {STEPS_PER_REVOLUTION, 0, -STEPS_PER_REVOLUTION, 0};
-  long moveForwardAndLeft[] = {-STEPS_PER_REVOLUTION, -STEPS_PER_REVOLUTION, STEPS_PER_REVOLUTION, STEPS_PER_REVOLUTION};
-  long moveForwardAndRight[] = {STEPS_PER_REVOLUTION, -STEPS_PER_REVOLUTION, -STEPS_PER_REVOLUTION, STEPS_PER_REVOLUTION};
-  long moveBackwardAndRight[] = {STEPS_PER_REVOLUTION, STEPS_PER_REVOLUTION, -STEPS_PER_REVOLUTION, -STEPS_PER_REVOLUTION};
-  long moveBackwardAndLeft[] = {-STEPS_PER_REVOLUTION, STEPS_PER_REVOLUTION, STEPS_PER_REVOLUTION, -STEPS_PER_REVOLUTION};
+//  long test[] = {STEPS_PER_REVOLUTION, STEPS_PER_REVOLUTION, STEPS_PER_REVOLUTION, STEPS_PER_REVOLUTION};
+//  move(test);
+
+  long distance = STEPS_PER_REVOLUTION * 2;
+  
+  long moveForward[] =  {0, -distance , 0,  distance};
+  long moveBackward[] = {0,  distance , 0, -distance};
+  long moveLeft[] =  {-distance , 0,  distance , 0};
+  long moveRight[] = { distance , 0, -distance , 0};
+  long moveForwardAndLeft[] =   {-distance , -distance ,  distance ,  distance };
+  long moveForwardAndRight[] =  { distance , -distance , -distance ,  distance };
+  long moveBackwardAndRight[] = { distance ,  distance , -distance , -distance };
+  long moveBackwardAndLeft[] =  {-distance ,  distance ,  distance , -distance };
 
    move(moveForward);
    
