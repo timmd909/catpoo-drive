@@ -6,8 +6,8 @@
 
 #define STEPS_PER_REVOLUTION 2048
 // #define MAX_SPEED 0.5
-#define MAX_SPEED 1000
-#define MAX_ACCELERATION 100
+#define MAX_SPEED 1500
+#define MAX_ACCELERATION 200
 
 extern MultiStepper steppers;
 extern AccelStepper leftStepper;
