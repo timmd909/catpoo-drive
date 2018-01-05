@@ -17,3 +17,20 @@ void resetAllSteppers()
   backStepper.setCurrentPosition(0);
 }
 
+void move(long positions[])
+{
+  resetAllSteppers();
+  steppers.moveTo(positions);
+  steppers.runSpeedToPosition();
+}
+
+void rotate(long distance)
+{
+  Serial.println(String("Rotating ") + distance);
+  long positions[] = {distance, distance, distance, distance};
+  steppers.moveTo(positions);
+  steppers.runSpeedToPosition();
+}
+
+
+
