@@ -93,8 +93,6 @@ namespace Motors
 
 	void reset()
 	{
-		Serial.println("MOTORS: RESET");
-
 		leftStepper.setCurrentPosition(0);
 		frontStepper.setCurrentPosition(0);
 		rightStepper.setCurrentPosition(0);
@@ -103,29 +101,30 @@ namespace Motors
 		powerOff();
 	}
 
+	void commit()
+	{
+		Motors::steppers.runSpeedToPosition();
+	}
+
 	void loop()
 	{
-		// step the motors here
+		steppers.run();
 	}
 
 	void move(long xDistance, long yDistance)
 	{
-		Serial.println(String("MOTORS: MOVE ") + xDistance + String(" ") + yDistance);
 		reset();
 
 		long positions[] = {-yDistance, -xDistance, yDistance, xDistance};
 
 		steppers.moveTo(positions);
-		steppers.runSpeedToPosition();
 	}
 
 	void rotate(long distance)
 	{
-		Serial.println(String("MOTORS: ROTATE ") + distance);
 		reset();
 
 		long positions[] = {distance, distance, distance, distance};
 		steppers.moveTo(positions);
-		steppers.runSpeedToPosition();
 	}
 }

@@ -27,6 +27,14 @@ namespace Motors
 	void loop();
 
 	/**
+	 * Commit to letting the motors run until they reach their
+	 * destination, no matter how far away that could be.
+	 *
+	 * Use sparingly.
+	 */
+	void commit();
+
+	/**
 	 * Turn off power to the motor coils
 	 */
 	void powerOff();

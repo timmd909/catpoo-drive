@@ -10,8 +10,6 @@ namespace Tests
   // clockwise 1 revolution, then 1 revolution counterclockwise.
   void wheel()
   {
-    Serial.println("TEST: WHEEL");
-
     Motors::reset();
 
     int distance = Motors::STEPS_PER_REVOLUTION / 4;
@@ -31,34 +29,32 @@ namespace Tests
 
   void dance()
   {
-    Serial.println("TEST: DANCE");
-
     long distance = Motors::STEPS_PER_REVOLUTION / 8;
 
-    Motors::rotate(distance * -2);
-    Motors::rotate(distance *  2);
+    Motors::rotate(distance * -2); Motors::commit();
+    Motors::rotate(distance *  2); Motors::commit();
 
     //
     // straight directions
     //
-    Motors::move(0, distance);
-    Motors::move(0, -distance * 2);
-    Motors::move(0, distance);
+    Motors::move(0, distance);      Motors::commit();
+    Motors::move(0, -distance * 2); Motors::commit();
+    Motors::move(0, distance);      Motors::commit();
 
     //
     // angled movements
     //
-    Motors::move(-distance, distance);
-    Motors::move(distance, -distance);
+    Motors::move(-distance, distance);  Motors::commit();
+    Motors::move(distance, -distance);  Motors::commit();
 
-    Motors::move(distance, distance);
-    Motors::move(-distance, -distance);
+    Motors::move(distance, distance);   Motors::commit();
+    Motors::move(-distance, -distance); Motors::commit();
 
-    Motors::move(distance, -distance);
-    Motors::move(-distance, distance);
+    Motors::move(distance, -distance);  Motors::commit();
+    Motors::move(-distance, distance);  Motors::commit();
 
-    Motors::move(-distance, -distance);
-    Motors::move(distance, distance);
+    Motors::move(-distance, -distance); Motors::commit();
+    Motors::move(distance, distance);   Motors::commit();
   }
 
 }

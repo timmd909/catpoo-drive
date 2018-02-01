@@ -22,7 +22,7 @@ namespace Comms
 
 	void resetBuffer()
 	{
-		Serial.println("COMMS: =================");
+		Serial.println("COMMS: OK");
 		memset(receiveBuffer, 0, BUFFER_LENGTH);
 		receiveBufferIndex = 0;
 	}
@@ -38,16 +38,24 @@ namespace Comms
 		token = tokenStr.c_str();
 
 		if (0 == strcmp(token, "DANCE")) {
+			Serial.println("RUNNING TEST: DANCE");
 			Tests::dance();
+			Serial.println("TEST COMPLETE");
+
 		} else if (0 == strcmp(token, "WHEEL")) {
+			Serial.println("TESTS: WHEEL");
 			Tests::wheel();
+			Serial.println("TEST COMPLETE");
+
 		} else if (!soBad && 0 == strcmp(token, "GOOD") && strstr(receiveBuffer, "AND YOU") != NULL) {
-			Serial.print("YOU: ");
-			Serial.println(receiveBuffer);
+			Serial.print("YOU: "); Serial.println(receiveBuffer);
 			Serial.println("ME: NOT SO BAD");
 			soBad = true;
+
 		} else if (0 == strcmp(token, "RESET")) {
+			Serial.println("MOTORS: RESET");
 			Motors::reset();
+
 		} else if (0 == strcmp(token, "MOVE")) {
 			token = strtok(NULL, " ");
 			int xDistance = atoi(token);
@@ -55,12 +63,16 @@ namespace Comms
 			token = strtok(NULL, " ");
 			int yDistance = atoi(token);
 
+			Serial.print("MOTORS: MOVE "); Serial.print(xDistance); Serial.println(yDistance);
 			Motors::move(xDistance, yDistance);
+
 		} else if (0 == strcmp(token, "ROTATE")) {
 			token = strtok(NULL, " ");
 			int rotation = atoi(token);
 
+			Serial.print("MOTORS: ROTATE "); Serial.println(rotation);
 			Motors::rotate(rotation);
+
 		} else {
 			Serial.print("DAFUQ: ");
 			Serial.println(receiveBuffer);
