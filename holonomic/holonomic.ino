@@ -30,13 +30,4 @@ void loop()
 	Motors::loop();
 
   delay(1);
-
-//  const int BUFFER_LENGTH = 1024;
-//  char receiveBuffer[BUFFER_LENGTH];
-//  memset(receiveBuffer, 0, BUFFER_LENGTH);
-//
-//  if (Serial.available() > 0) {
-//    Serial.readBytesUntil('\n', receiveBuffer, BUFFER_LENGTH);
-//  }
-
 }

@@ -22,43 +22,48 @@ namespace Comms
 
 	void resetBuffer()
 	{
-		Serial.println("COMMS: RECV BUFFER RESET");
+		Serial.println("COMMS: =================");
 		memset(receiveBuffer, 0, BUFFER_LENGTH);
 		receiveBufferIndex = 0;
 	}
 
 	void processBuffer()
 	{
-		char tokenBuffer[64];
+		char* token;
 
-		// convert the buffer to a string for easier processing
-		String command(receiveBuffer);
-		command.trim();
+		token = strtok(receiveBuffer, " ");
+		// strip off whitespace in a hacky manner... do it right better later
+		String tokenStr = String(token);
+		tokenStr.trim();
+		token = tokenStr.c_str();
 
-		if (command.startsWith("DANCE")) {
+		if (0 == strcmp(token, "DANCE")) {
 			Tests::dance();
-		} else if (command.startsWith("WHEEL")) {
+		} else if (0 == strcmp(token, "WHEEL")) {
 			Tests::wheel();
-		} else if (!soBad && command.indexOf("GOOD") == 0 && command.indexOf("AND YOU") > 0) {
-			if (!soBad) {
-				Serial.print("YOU: ");
-				Serial.println(command);
-				Serial.println("ME: NOT SO BAD");
-				soBad = true;
-			}
-		} else if (command.startsWith("RESET")) {
+		} else if (!soBad && 0 == strcmp(token, "GOOD") && strstr(receiveBuffer, "AND YOU") != NULL) {
+			Serial.print("YOU: ");
+			Serial.println(receiveBuffer);
+			Serial.println("ME: NOT SO BAD");
+			soBad = true;
+		} else if (0 == strcmp(token, "RESET")) {
 			Motors::reset();
-		} else if (command.startsWith("MOVE ")) {
-			strtok(command.c_str(), " "); // strip off the front
-			String xDistance = String(strtok(NULL, " "));
-			String yDistance = String(strtok(NULL, " "));
-			Motors::move(xDistance.toInt(), yDistance.toInt());
-		} else if (command.startsWith("ROTATE ")) {
-			strtok(command.c_str(), " "); // strip off the front
-			String angle = String(strtok(NULL, " "));
-			Motors::rotate(angle.toInt());
+		} else if (0 == strcmp(token, "MOVE")) {
+			token = strtok(NULL, " ");
+			int xDistance = atoi(token);
+
+			token = strtok(NULL, " ");
+			int yDistance = atoi(token);
+
+			Motors::move(xDistance, yDistance);
+		} else if (0 == strcmp(token, "ROTATE")) {
+			token = strtok(NULL, " ");
+			int rotation = atoi(token);
+
+			Motors::rotate(rotation);
 		} else {
-			Serial.println(String("DAFUQ: ") + command);
+			Serial.print("DAFUQ: ");
+			Serial.println(receiveBuffer);
 		}
 
 		// cleanup: wipe and reset the receive buffer
