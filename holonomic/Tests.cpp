@@ -1,6 +1,6 @@
 #include <HardwareSerial.h>
 #include "Motors.h"
-#include "tests.h"
+#include "Tests.h"
 
 extern Serial_ Serial;
 
