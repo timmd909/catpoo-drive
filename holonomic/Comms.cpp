@@ -1,4 +1,5 @@
 #include <HardwareSerial.h>
+#include <Wire.h>
 #include "Comms.h"
 #include "Motors.h"
 #include "Tests.h"
@@ -7,23 +8,46 @@ extern Serial_ Serial;
 
 namespace Comms
 {
-	const int BUFFER_LENGTH = 1024;
+	const int I2C_ADDR = 0x45;
+
+	const int COMM_BUFFER_LENGTH = 1024;
 	bool soBad = false;
 
-	char receiveBuffer[BUFFER_LENGTH];
+	char receiveBuffer[COMM_BUFFER_LENGTH];
 	int receiveBufferIndex = 0;
+
+  void i2cRequest()
+  {
+    unsigned char message[] = "HOW ARE YOU NOW?\n";
+    // pump out anything waiting in the queue in the future
+    Wire.write(message, 17);
+  }
+
+  void i2cReceive(int numBytes)
+  {
+    while (Wire.available())
+    {
+      char c = Wire.read();
+      Serial.print("I2C: ");
+      Serial.println((char)c);
+    }
+    // ...
+  }
 
 	void init()
 	{
+		Wire.begin(I2C_ADDR);
+		Wire.onRequest(i2cRequest);
+		Wire.onReceive(i2cReceive);
+
 		Serial.println("COMMS: INIT");
-		Serial.begin(57600);
 		resetBuffer();
 	}
 
 	void resetBuffer()
 	{
 		Serial.println("COMMS: OK");
-		memset(receiveBuffer, 0, BUFFER_LENGTH);
+		memset(receiveBuffer, 0, COMM_BUFFER_LENGTH);
 		receiveBufferIndex = 0;
 	}
 
