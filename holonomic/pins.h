@@ -3,16 +3,17 @@
 
 #include <Arduino.h>
 
-#define MOTOR_LEFT_DIR_PIN 5
-#define MOTOR_LEFT_STEP_PIN 6
+#define MOTOR_FL_DIR   4
+#define MOTOR_FL_STEP  5
 
-#define MOTOR_FRONT_DIR_PIN 7
-#define MOTOR_FRONT_STEP_PIN 8
+#define MOTOR_FR_DIR   6
+#define MOTOR_FR_STEP  7
 
-#define MOTOR_RIGHT_DIR_PIN 9
-#define MOTOR_RIGHT_STEP_PIN 10
+#define MOTOR_BR_DIR   8
+#define MOTOR_BR_STEP  9
 
-#define MOTOR_BACK_DIR_PIN 11
-#define MOTOR_BACK_STEP_PIN 12
+#define MOTOR_BL_DIR  10
+#define MOTOR_BL_STEP 11
 
 #endif
+

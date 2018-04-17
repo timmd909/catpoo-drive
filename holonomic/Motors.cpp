@@ -1,109 +1,120 @@
-//#include <AccelStepper.h>
-//
+#include <AccelStepper.h>
 #include "Motors.h"
 #include "pins.h"
 
 namespace Motors
 {
-	const int PULSE_MIN_WIDTH = 50;
-	const int STEPS_PER_REVOLUTION = 1025;
+	const int PULSE_MIN_WIDTH = 2;
+	const int STEPS_PER_REVOLUTION = 200;
 	const int MAX_SPEED = 500;
-	const int MAX_ACCELERATION = 10;
+	const int MAX_ACCELERATION = 50;
 
-//	MultiStepper steppers = MultiStepper();
-//	AccelStepper leftStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_LEFT_STEP_PIN,  MOTOR_LEFT_DIR_PIN);
-//	AccelStepper frontStepper = AccelStepper(AccelStepper::DRIVER, MOTOR_FRONT_STEP_PIN, MOTOR_FRONT_DIR_PIN);
-//	AccelStepper rightStepper = AccelStepper(AccelStepper::DRIVER, MOTOR_RIGHT_STEP_PIN, MOTOR_RIGHT_DIR_PIN);
-//	AccelStepper backStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_BACK_STEP_PIN,  MOTOR_BACK_DIR_PIN);
+  const double SQRT2 = sqrt(2.0f);
+
+	MultiStepper steppers = MultiStepper();
+  AccelStepper flStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_FL_STEP, MOTOR_FL_DIR);
+  AccelStepper frStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_FR_STEP, MOTOR_FR_DIR);
+  AccelStepper blStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_BL_STEP, MOTOR_BL_DIR);
+  AccelStepper brStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_BR_STEP, MOTOR_BR_DIR);
 
 	void init()
 	{
 		Serial.println("MOTORS: INIT");
 
-//    pinMode(MOTOR_LEFT_STEP_PIN,  OUTPUT);
-//    pinMode(MOTOR_LEFT_DIR_PIN,   OUTPUT);
-//    pinMode(MOTOR_FRONT_STEP_PIN, OUTPUT);
-//    pinMode(MOTOR_FRONT_DIR_PIN,  OUTPUT);
-//    pinMode(MOTOR_RIGHT_STEP_PIN, OUTPUT);
-//    pinMode(MOTOR_RIGHT_DIR_PIN,  OUTPUT);
-//    pinMode(MOTOR_BACK_STEP_PIN,  OUTPUT);
-//    pinMode(MOTOR_BACK_DIR_PIN,   OUTPUT);
+    flStepper.setMaxSpeed(MAX_SPEED);
+    flStepper.setAcceleration(MAX_ACCELERATION );
 
-    //	  leftStepper.setMinPulseWidth(PULSE_MIN_WIDTH);
-    //	  leftStepper.setMaxSpeed(MAX_SPEED);
-    //	  leftStepper.setSpeed(MAX_SPEED);
-    //	  leftStepper.setAcceleration(MAX_ACCELERATION);
-    //
-    //	  frontStepper.setMinPulseWidth(PULSE_MIN_WIDTH);
-    //	  frontStepper.setMaxSpeed(MAX_SPEED);
-    //	  frontStepper.setSpeed(MAX_SPEED);
-    //	  frontStepper.setAcceleration(MAX_ACCELERATION);
-    //
-    //	  rightStepper.setMinPulseWidth(PULSE_MIN_WIDTH);
-    //	  rightStepper.setMaxSpeed(MAX_SPEED);
-    //	  rightStepper.setSpeed(MAX_SPEED);
-    //	  rightStepper.setAcceleration(MAX_ACCELERATION);
-    //
-    //	  backStepper.setMinPulseWidth(PULSE_MIN_WIDTH);
-    //	  backStepper.setMaxSpeed(MAX_SPEED);
-    //	  backStepper.setSpeed(MAX_SPEED);
-    //	  backStepper.setAcceleration(MAX_ACCELERATION);
-    //
-    //	  steppers.addStepper(leftStepper);
-    //	  steppers.addStepper(frontStepper);
-    //	  steppers.addStepper(rightStepper);
-    //	  steppers.addStepper(backStepper);
-    //
-    //		reset();
+    frStepper.setMaxSpeed(MAX_SPEED);
+    frStepper.setAcceleration(MAX_ACCELERATION );
+    
+    blStepper.setMaxSpeed(MAX_SPEED);
+    blStepper.setAcceleration(MAX_ACCELERATION );
+    
+    brStepper.setMaxSpeed(MAX_SPEED);
+    brStepper.setAcceleration(MAX_ACCELERATION );
+ 
+    pinMode(MOTOR_FL_STEP, OUTPUT);
+    pinMode(MOTOR_FL_DIR,  OUTPUT);
+    digitalWrite(MOTOR_FL_DIR,  LOW);
+    digitalWrite(MOTOR_FL_STEP, LOW);
+    
+    pinMode(MOTOR_FR_STEP, OUTPUT);
+    pinMode(MOTOR_FR_DIR,  OUTPUT);
+    digitalWrite(MOTOR_FR_DIR,  LOW);
+    digitalWrite(MOTOR_FR_STEP, LOW);
+
+    pinMode(MOTOR_BR_STEP, OUTPUT);
+    pinMode(MOTOR_BR_DIR,  OUTPUT);
+    digitalWrite(MOTOR_BR_DIR,  LOW);
+    digitalWrite(MOTOR_BR_STEP, LOW);
+
+    pinMode(MOTOR_BL_STEP, OUTPUT);
+    pinMode(MOTOR_BL_DIR,  OUTPUT);
+    digitalWrite(MOTOR_BL_DIR,  LOW);
+    digitalWrite(MOTOR_BL_STEP, LOW);
+    
+    steppers.addStepper(flStepper);
+    steppers.addStepper(frStepper);
+    steppers.addStepper(brStepper);
+    steppers.addStepper(blStepper);
+
+    Motors::reset();
+    
   }
-//
-//	void powerOff()
-//	{
-////    digitalWrite(MOTOR_LEFT_STEP_PIN,  LOW);
-////    digitalWrite(MOTOR_LEFT_DIR_PIN,   LOW);
-////    digitalWrite(MOTOR_FRONT_STEP_PIN, LOW);
-////    digitalWrite(MOTOR_FRONT_DIR_PIN,  LOW);
-////    digitalWrite(MOTOR_RIGHT_STEP_PIN, LOW);
-////    digitalWrite(MOTOR_RIGHT_DIR_PIN,  LOW);
-////    digitalWrite(MOTOR_BACK_STEP_PIN,  LOW);
-////    digitalWrite(MOTOR_BACK_DIR_PIN,   LOW);
-//	}
-//
-//	void reset()
-//	{
-////		leftStepper.setCurrentPosition(0);
-////		frontStepper.setCurrentPosition(0);
-////		rightStepper.setCurrentPosition(0);
-////		backStepper.setCurrentPosition(0);
-////
-////		powerOff();
-//	}
-//
-//	void commit()
-//	{
-////		Motors::steppers.runSpeedToPosition();
-//	}
-//
-//	void loop()
-//	{
-////		steppers.run();
-//	}
-//
-//	void move(long xDistance, long yDistance)
-//	{
-////		reset();
-////
-////		long positions[] = {-yDistance, -xDistance, yDistance, xDistance};
-////
-////		steppers.moveTo(positions);
-//	}
-//
-//	void rotate(long distance)
-//	{
-////		reset();
-////
-////		long positions[] = {distance, distance, distance, distance};
-////		steppers.moveTo(positions);
-//	}
+
+	void reset()
+	{
+		flStepper.setCurrentPosition(0);
+		frStepper.setCurrentPosition(0);
+		brStepper.setCurrentPosition(0);
+		blStepper.setCurrentPosition(0);
+	}
+
+	void commit()
+	{
+		Motors::steppers.runSpeedToPosition();
+	}
+
+	void loop()
+	{
+		steppers.run();
+	}
+
+	void move(long xDistance, long yDistance)
+	{
+    double angle;
+
+    reset();
+
+    double fl_X, fr_X, bl_X, br_X; 
+    fl_X = SQRT2 * xDistance;
+    fr_X = SQRT2 * xDistance;
+    br_X = SQRT2 * xDistance * -1.0f;
+    bl_X = SQRT2 * xDistance * -1.0f;
+        
+    double fr_Y, fl_Y, bl_Y, br_Y; 
+    fl_Y = SQRT2 * yDistance;
+    fr_Y = SQRT2 * yDistance * -1.0f;
+    br_Y = SQRT2 * yDistance * -1.0f;
+    bl_Y = SQRT2 * yDistance;
+
+		long positions[] = {
+      (fl_X + fl_Y),
+      (fr_X + fr_Y),
+      (br_X + br_Y),
+      (bl_X + bl_Y)
+	  };
+    
+		steppers.moveTo(positions);
+	}
+
+	void rotate(long distance)
+	{
+		reset();
+
+		long positions[] = {distance, distance, distance, distance};
+		steppers.moveTo(positions);
+	}
 
 }
+

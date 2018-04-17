@@ -5,11 +5,8 @@
 //#include <AccelStepper.h>
 //#include "Comms.h"
 #include "Motors.h"
-//#include "Tests.h"
+#include "Tests.h"
 #include "pins.h"
-
-//int stepCount = 0;
-//int destination = Motors::STEPS_PER_REVOLUTION;
 
 void setup()
 {
@@ -25,79 +22,81 @@ void setup()
   pinMode(A2, INPUT);
   pinMode(A3, INPUT);
   pinMode(A4, INPUT);
-//  pinMode(11, OUTPUT);
-//  pinMode(12, OUTPUT);
+  pinMode(A5, INPUT);
 
   //Comms::init();
   Motors::init();
 
   Serial.println("INIT COMPLETE");
 
-  digitalWrite(MOTOR_LEFT_DIR_PIN,  HIGH);
-  digitalWrite(MOTOR_FRONT_DIR_PIN, HIGH);
-  digitalWrite(MOTOR_RIGHT_DIR_PIN, HIGH);
-  digitalWrite(MOTOR_BACK_DIR_PIN,  HIGH);
-
+  Motors::frStepper.moveTo(500);
+  Motors::flStepper.moveTo(500);
+  Motors::brStepper.moveTo(500);
+  Motors::blStepper.moveTo(500);
 }
 
 
 int count = 0;
 
+void printValue(char *description, int value)
+{
+  int lowRes = value >> 7;
+//  Serial.print(lowRes);
+  int i;
+  Serial.print("[");
+  Serial.print(description);
+  Serial.print(" ");
+  for (i=0; i < lowRes; i++) {
+    Serial.print("=");
+  }  
+  for (; i < 8; i++) {
+    Serial.print(" ");
+  }
+  Serial.print("]");
+}
+
 void loop()
 {
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(50);
-  digitalWrite(LED_BUILTIN, LOW);
+  Motors::loop();
 
-//	Comms::loop();
-//	Motors::loop();
+  static bool firstTime = true;
+
+  if (firstTime) {
+    firstTime = false; 
+    Tests::dance();    
+  }
+
+//  int a0;
+//  int a1;
+//  int a2;
+//  int a3;
+//  int a4;
+//  int a5;
+//  char buffer[1024];
+//  sprintf(
+//    buffer,
+//    "%4d %4d %4d %4d",
+//    Motors::flStepper.currentPosition(),
+//    Motors::frStepper.currentPosition(),
+//    Motors::brStepper.currentPosition(),
+//    Motors::blStepper.currentPosition()
+//   );
+//  Serial.println(buffer);
+//  
+//  a0 = analogRead(A0);
+//  a1 = analogRead(A1);
+//  a2 = analogRead(A2);
+//  a3 = analogRead(A3);
+//  a4 = analogRead(A4);
+//  a5 = analogRead(A5);
 //
-
-  delay(1000);
-
-  digitalWrite(MOTOR_LEFT_STEP_PIN,  HIGH);
-  digitalWrite(MOTOR_FRONT_STEP_PIN, HIGH);
-  digitalWrite(MOTOR_RIGHT_STEP_PIN, HIGH);
-  digitalWrite(MOTOR_BACK_STEP_PIN,  HIGH);
-
-  delay(1000);
-  
-  digitalWrite(MOTOR_LEFT_STEP_PIN,  LOW);
-  digitalWrite(MOTOR_FRONT_STEP_PIN, LOW);
-  digitalWrite(MOTOR_RIGHT_STEP_PIN, LOW);
-  digitalWrite(MOTOR_BACK_STEP_PIN,  LOW);
-  
-
-//  Serial.println("Dance!");
-//  Tests::dance();
-//  delay(1000);  
-
-  int input;
-  
-//  input = analogRead(A0);
-//  Serial.print("A0: ");
-//  Serial.println(input);
-
-  input = analogRead(A1);
-  Serial.print("A1: ");
-  Serial.println(input);
-
-//  input = analogRead(A2);
-//  Serial.print("A2: ");
-//  Serial.println(input);
+//  printValue("A0", a0);
+//  printValue("A1", a1);
+//  printValue("A2", a2);
+//  printValue("A3", a3);
+//  printValue("A4", a4);
+//  printValue("A5", a5);
 //
-//  input = analogRead(A3);
-//  Serial.print("A3: ");
-//  Serial.println(input);
-//
-//  input = analogRead(A4);
-//  Serial.print("A4: ");
-//  Serial.println(input);
-//
-//  input = analogRead(A5);
-//  Serial.print("A5: ");
-//  Serial.println(input);
-
-  Serial.println(count++);
-
+//  Serial.println("\n");
 }
+
