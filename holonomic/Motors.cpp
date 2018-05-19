@@ -6,8 +6,8 @@ namespace Motors
 {
 	const int PULSE_MIN_WIDTH = 5;
 	const int STEPS_PER_REVOLUTION = 200;
-	const int MAX_SPEED = 200;
-	const int MAX_ACCELERATION = 10;
+	const int MAX_SPEED = 300;
+	const int MAX_ACCELERATION = 300;
 
   const double SQRT2 = sqrt(2.0f);
 
@@ -21,17 +21,8 @@ namespace Motors
 	{
 		Serial.println("MOTORS: INIT");
 
-    flStepper.setMaxSpeed(MAX_SPEED);
-    flStepper.setAcceleration(MAX_ACCELERATION );
-
-    frStepper.setMaxSpeed(MAX_SPEED);
-    frStepper.setAcceleration(MAX_ACCELERATION );
-    
-    blStepper.setMaxSpeed(MAX_SPEED);
-    blStepper.setAcceleration(MAX_ACCELERATION );
-    
-    brStepper.setMaxSpeed(MAX_SPEED);
-    brStepper.setAcceleration(MAX_ACCELERATION );
+    setMaxSpeed(MAX_SPEED);
+    setAcceleration(MAX_ACCELERATION );
  
     pinMode(MOTOR_FL_STEP, OUTPUT);
     pinMode(MOTOR_FL_DIR,  OUTPUT);
@@ -63,24 +54,39 @@ namespace Motors
 
 	void reset()
 	{
-		flStepper.setCurrentPosition(0);
-		frStepper.setCurrentPosition(0);
-		brStepper.setCurrentPosition(0);
-		blStepper.setCurrentPosition(0);
-    steppers.moveTo(0);
+    flStepper.setCurrentPosition(0);
+    frStepper.setCurrentPosition(0);
+    brStepper.setCurrentPosition(0);
+    blStepper.setCurrentPosition(0);
+
+    long zeros[] = { 0, 0, 0, 0 };
+    steppers.moveTo(zeros);
 	}
+
+  void setMaxSpeed(int speed) 
+  {
+    flStepper.setMaxSpeed(speed);
+    frStepper.setMaxSpeed(speed);
+    brStepper.setMaxSpeed(speed);
+    blStepper.setMaxSpeed(speed);    
+  }
+
+  void setAcceleration(int accel)
+  {
+    flStepper.setMaxSpeed(accel);
+    frStepper.setMaxSpeed(accel);
+    brStepper.setMaxSpeed(accel);
+    blStepper.setMaxSpeed(accel);
+  }
 
 	void commit()
 	{
+    Serial.println("Committing motors");
 		Motors::steppers.runSpeedToPosition();
 	}
 
 	void loop()
 	{
-    Serial.print("FL ");
-    Serial.print(flStepper.currentPosition());
-    Serial.print(" -> ");
-    Serial.println(flStepper.targetPosition());
 		steppers.run();
 	}
 

@@ -34,6 +34,9 @@ namespace Motors
 	 */
 	void commit();
 
+  void setMaxSpeed(int speed);
+  void setAcceleration(int accel);
+
 	/**
 	 * How many units to move along the x and y axis
 	 * @param xDistance Positive values => right. Negative values => left.

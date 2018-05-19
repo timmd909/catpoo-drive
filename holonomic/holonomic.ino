@@ -28,11 +28,6 @@ void setup()
   Motors::init();
 
   Serial.println("INIT COMPLETE");
-
-  Motors::frStepper.moveTo(500);
-  Motors::flStepper.moveTo(500);
-  Motors::brStepper.moveTo(500);
-  Motors::blStepper.moveTo(500);
 }
 
 
@@ -57,10 +52,7 @@ void printValue(char *description, int value)
 
 void loop()
 {
-  Serial.print("Starting Loop...");
-  
   Motors::loop();
   Comms::loop();
-
 }
 
