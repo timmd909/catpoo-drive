@@ -10,9 +10,9 @@
 
 void setup()
 {
-	// Wait 2 seconds to give Arduino IDE time to upload new sketches
-	// before we open the serial port.
-	delay(5000);
+  // Wait 2 seconds to give Arduino IDE time to upload new sketches
+  // before we open the serial port.
+  delay(5000);
 
   Serial.println("INITIALIZING");
 
@@ -43,7 +43,7 @@ void printValue(char *description, int value)
   Serial.print(" ");
   for (i=0; i < lowRes; i++) {
     Serial.print("=");
-  }  
+  }
   for (; i < 8; i++) {
     Serial.print(" ");
   }
@@ -55,4 +55,3 @@ void loop()
   Motors::loop();
   Comms::loop();
 }
-

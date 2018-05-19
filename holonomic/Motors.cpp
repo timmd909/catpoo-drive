@@ -4,31 +4,31 @@
 
 namespace Motors
 {
-	const int PULSE_MIN_WIDTH = 5;
-	const int STEPS_PER_REVOLUTION = 200;
-	const int MAX_SPEED = 300;
-	const int MAX_ACCELERATION = 300;
+  const int PULSE_MIN_WIDTH = 5;
+  const int STEPS_PER_REVOLUTION = 200;
+  const int MAX_SPEED = 300;
+  const int MAX_ACCELERATION = 300;
 
   const double SQRT2 = sqrt(2.0f);
 
-	MultiStepper steppers = MultiStepper();
+  MultiStepper steppers = MultiStepper();
   AccelStepper flStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_FL_STEP, MOTOR_FL_DIR);
   AccelStepper frStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_FR_STEP, MOTOR_FR_DIR);
   AccelStepper blStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_BL_STEP, MOTOR_BL_DIR);
   AccelStepper brStepper  = AccelStepper(AccelStepper::DRIVER, MOTOR_BR_STEP, MOTOR_BR_DIR);
 
-	void init()
-	{
-		Serial.println("MOTORS: INIT");
+  void init()
+  {
+    Serial.println("MOTORS: INIT");
 
     setMaxSpeed(MAX_SPEED);
     setAcceleration(MAX_ACCELERATION );
- 
+
     pinMode(MOTOR_FL_STEP, OUTPUT);
     pinMode(MOTOR_FL_DIR,  OUTPUT);
     digitalWrite(MOTOR_FL_DIR,  LOW);
     digitalWrite(MOTOR_FL_STEP, LOW);
-    
+
     pinMode(MOTOR_FR_STEP, OUTPUT);
     pinMode(MOTOR_FR_DIR,  OUTPUT);
     digitalWrite(MOTOR_FR_DIR,  LOW);
@@ -43,7 +43,7 @@ namespace Motors
     pinMode(MOTOR_BL_DIR,  OUTPUT);
     digitalWrite(MOTOR_BL_DIR,  LOW);
     digitalWrite(MOTOR_BL_STEP, LOW);
-    
+
     steppers.addStepper(flStepper);
     steppers.addStepper(frStepper);
     steppers.addStepper(brStepper);
@@ -52,8 +52,8 @@ namespace Motors
     Motors::reset();
   }
 
-	void reset()
-	{
+  void reset()
+  {
     flStepper.setCurrentPosition(0);
     frStepper.setCurrentPosition(0);
     brStepper.setCurrentPosition(0);
@@ -61,14 +61,14 @@ namespace Motors
 
     long zeros[] = { 0, 0, 0, 0 };
     steppers.moveTo(zeros);
-	}
+  }
 
-  void setMaxSpeed(int speed) 
+  void setMaxSpeed(int speed)
   {
     flStepper.setMaxSpeed(speed);
     frStepper.setMaxSpeed(speed);
     brStepper.setMaxSpeed(speed);
-    blStepper.setMaxSpeed(speed);    
+    blStepper.setMaxSpeed(speed);
   }
 
   void setAcceleration(int accel)
@@ -79,52 +79,51 @@ namespace Motors
     blStepper.setMaxSpeed(accel);
   }
 
-	void commit()
-	{
+  void commit()
+  {
     Serial.println("Committing motors");
-		Motors::steppers.runSpeedToPosition();
-	}
+    Motors::steppers.runSpeedToPosition();
+  }
 
-	void loop()
-	{
-		steppers.run();
-	}
+  void loop()
+  {
+    steppers.run();
+  }
 
-	void move(long xDistance, long yDistance)
-	{
+  void move(long xDistance, long yDistance)
+  {
     double angle;
 
     reset();
 
-    double fl_X, fr_X, bl_X, br_X; 
+    double fl_X, fr_X, bl_X, br_X;
     fl_X = SQRT2 * xDistance;
     fr_X = SQRT2 * xDistance;
     br_X = SQRT2 * xDistance * -1.0f;
     bl_X = SQRT2 * xDistance * -1.0f;
-        
-    double fr_Y, fl_Y, bl_Y, br_Y; 
+
+    double fr_Y, fl_Y, bl_Y, br_Y;
     fl_Y = SQRT2 * yDistance;
     fr_Y = SQRT2 * yDistance * -1.0f;
     br_Y = SQRT2 * yDistance * -1.0f;
     bl_Y = SQRT2 * yDistance;
 
-		long positions[] = {
+    long positions[] = {
       (fl_X + fl_Y),
       (fr_X + fr_Y),
       (br_X + br_Y),
       (bl_X + bl_Y)
-	  };
-    
-		steppers.moveTo(positions);
-	}
+    };
 
-	void rotate(long distance)
-	{
-		reset();
+    steppers.moveTo(positions);
+  }
 
-		long positions[] = {distance, distance, distance, distance};
-		steppers.moveTo(positions);
-	}
+  void rotate(long distance)
+  {
+    reset();
+
+    long positions[] = {distance, distance, distance, distance};
+    steppers.moveTo(positions);
+  }
 
 }
-

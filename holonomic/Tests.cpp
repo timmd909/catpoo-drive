@@ -50,7 +50,7 @@ namespace Tests
     Motors::move(distance, 0);      Motors::commit();
 
     //
-    // circle 
+    // circle
     //
     int angle, xdistance, ydistance;
     double angle_in_radians;
@@ -58,14 +58,14 @@ namespace Tests
       angle_in_radians= angle * M_PI / 180.0;
       xdistance = (int)(cos(angle_in_radians) * 20.0f);
       ydistance = (int)(sin(angle_in_radians) * 20.0f);
-      Motors::move(xdistance, ydistance); Motors::commit();  
+      Motors::move(xdistance, ydistance); Motors::commit();
     }
 
     //
-    // square 
-    // 
+    // square
+    //
     Motors::move(distance, 0); Motors::commit();
-    
+
     Motors::move(0, distance); Motors::commit();
     Motors::move(-2 * distance, 0); Motors::commit();
     Motors::move(0, -2 * distance); Motors::commit();
@@ -92,4 +92,3 @@ namespace Tests
 
 
 }
-

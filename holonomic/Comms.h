@@ -3,11 +3,10 @@
 
 namespace Comms
 {
-	void init();
-	void loop();
+  void init();
+  void loop();
   void processBuffer();
-	void resetBuffer();
+  void resetBuffer();
 }
 
 #endif
-

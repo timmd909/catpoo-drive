@@ -7,6 +7,4 @@ namespace Tests
 	void dance();
 }
 
-
 #endif
-
