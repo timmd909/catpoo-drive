@@ -6,13 +6,37 @@ CATPOO drive code for Arduino
 This is the minimal amount of commands necessary to implement the
 functionality necessary to get the robot moving.
 
-| Serial Command    | I2C  |  Description                                             |
-|-------------------|------|----------------------------------------------------------|
-| `RESET`           | 0x0 | Halt all movement and reset all internal variables        |
-| `TURN d`          | 0x1 | Turn `d` degrees (positive=counter clockwise)             |
-| `MOVE x y`        | 0x2 | Move `x` millimeters right, and `y` millimeters forward   |
-| `SPEED n`         | 0x4 | How fast should the robot go in millimeters per second    |
-| `GET v`           | 0x8 | Get Arduino interval value `v`.                           |
+## Commands
+
+* `0x00` - `RESET`
+    * Halt all movement and reset all internal variables
+
+* `0x01` - `ROTATE d`
+    * Rotate a certain number of millimeters.
+	* Positive = counter-clockwise
+	* Negative = clockwise
+
+* `0x02` - `TRANSLATE x y`
+    * Move a certain number of millimeters along the X and Y axis
+	* Positive X => right
+	* Negative X => left
+	* Positive Y => forward
+	* Negative Y => backward
+
+* `0x03` - `SPEED s`
+	* Speed that the `TRANSLATE` and `ROTATE` commands use
+
+* `0X04` - `TURN ds`
+	* Begin turning at a particular speed `ds`
+	* Positive = counter-clockwise
+	* Negative = clockwise
+
+* `0X05` - `MOVE xs ys`
+	* Begin moving in a particular direction and speed specified by `xs` and `ys`
+	* Positive X => right
+	* Negative X => left
+	* Positive Y => forward
+	* Negative Y => backward
 
 ## Thoughts
 
