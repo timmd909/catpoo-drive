@@ -66,39 +66,41 @@ namespace Comms
     token = tokenStr.c_str();
 
     if (0 == strcmp(token, "DANCE")) {
-      Serial.println("RUNNING TEST: DANCE");
       Tests::dance();
-      Serial.println("TEST COMPLETE");
 
     } else if (0 == strcmp(token, "WHEEL")) {
-      Serial.println("TESTS: WHEEL");
       Tests::wheel();
-      Serial.println("TEST COMPLETE");
 
     } else if (0 == strcmp(token, "RESET")) {
-      Serial.println("MOTORS: RESET");
       Motors::reset();
 
+    } else if (0 == strcmp(token, "TRANSLATE")) {
+      int xDistance = atoi(strtok(NULL, " "));
+      int yDistance = atoi(strtok(NULL, " "));
+      Motors::translate(xDistance, yDistance);
+
     } else if (0 == strcmp(token, "MOVE")) {
-      token = strtok(NULL, " ");
-      int xDistance = atoi(token);
-
-      token = strtok(NULL, " ");
-      int yDistance = atoi(token);
-
-      Serial.print("MOTORS: MOVE "); Serial.print(xDistance); Serial.println(yDistance);
+      int xDistance = atoi(strtok(NULL, " "));
+      int yDistance = atoi(strtok(NULL, " "));
       Motors::move(xDistance, yDistance);
 
-    } else if (0 == strcmp(token, "ROTATE")) {
-      token = strtok(NULL, " ");
-      int rotation = atoi(token);
+    } else if (0 == strcmp(token, "TURN")) {
+      int rotation = atoi(strtok(NULL, " "));
+      Motors::turn(rotation);
 
-      Serial.print("MOTORS: ROTATE "); Serial.println(rotation);
+    } else if (0 == strcmp(token, "ROTATE")) {
+      int rotation = atoi(strtok(NULL, " "));
       Motors::rotate(rotation);
+
+    } else if (0 == strcmp(token, "SPEED")) {
+      int speed = atoi(strtok(NULL, " "));
+      Motors::setSpeed(speed);
+      Motors::setMaxSpeed(speed);
 
     } else {
       Serial.print("DAFUQ: ");
       Serial.println(receiveBuffer);
+
     }
 
     // cleanup: wipe and reset the receive buffer

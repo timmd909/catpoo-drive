@@ -8,6 +8,7 @@ namespace Motors
   const int STEPS_PER_REVOLUTION = 200;
   const int MAX_SPEED = 300;
   const int MAX_ACCELERATION = 300;
+  const int MAX_DISTANCE = 1000;
 
   const double SQRT2 = sqrt(2.0f);
 
@@ -20,9 +21,6 @@ namespace Motors
   void init()
   {
     Serial.println("MOTORS: INIT");
-
-    setMaxSpeed(MAX_SPEED);
-    setAcceleration(MAX_ACCELERATION );
 
     pinMode(MOTOR_FL_STEP, OUTPUT);
     pinMode(MOTOR_FL_DIR,  OUTPUT);
@@ -49,11 +47,16 @@ namespace Motors
     steppers.addStepper(brStepper);
     steppers.addStepper(blStepper);
 
+    setMaxSpeed(MAX_SPEED);
+    setAcceleration(MAX_ACCELERATION);
+
     Motors::reset();
   }
 
   void reset()
   {
+    Serial.println("MOTORS: RESET");
+
     flStepper.setCurrentPosition(0);
     frStepper.setCurrentPosition(0);
     brStepper.setCurrentPosition(0);
@@ -63,8 +66,26 @@ namespace Motors
     steppers.moveTo(zeros);
   }
 
+  void setSpeed(int speed)
+  {
+    if (speed > MAX_SPEED) {
+      speed = MAX_SPEED;
+    }
+    Serial.print("MOTORS: SET SPEED ");
+    Serial.println(speed);
+    flStepper.setSpeed(speed);
+    frStepper.setSpeed(speed);
+    brStepper.setSpeed(speed);
+    blStepper.setSpeed(speed);
+  }
+
   void setMaxSpeed(int speed)
   {
+    if (speed > MAX_SPEED) {
+      speed = MAX_SPEED;
+    }
+    Serial.print("MOTORS: SET MAX SPEED ");
+    Serial.println(speed);
     flStepper.setMaxSpeed(speed);
     frStepper.setMaxSpeed(speed);
     brStepper.setMaxSpeed(speed);
@@ -73,15 +94,20 @@ namespace Motors
 
   void setAcceleration(int accel)
   {
-    flStepper.setMaxSpeed(accel);
-    frStepper.setMaxSpeed(accel);
-    brStepper.setMaxSpeed(accel);
-    blStepper.setMaxSpeed(accel);
+    if (accel > MAX_ACCELERATION) {
+      accel = MAX_ACCELERATION;
+    }
+    Serial.print("MOTORS: SET ACCEL ");
+    Serial.println(accel);
+    flStepper.setAcceleration(accel);
+    frStepper.setAcceleration(accel);
+    brStepper.setAcceleration(accel);
+    blStepper.setAcceleration(accel);
   }
 
   void commit()
   {
-    Serial.println("Committing motors");
+    Serial.println("MOTORS: COMMIT");
     Motors::steppers.runSpeedToPosition();
   }
 
@@ -90,9 +116,34 @@ namespace Motors
     steppers.run();
   }
 
-  void move(long xDistance, long yDistance)
+  void move(long x, long y)
   {
-    double angle;
+    Serial.print("MOTORS: MOVE (");
+    Serial.print(x);
+    Serial.print(", ");
+    Serial.print(y);
+    Serial.println(")");
+
+    double magnitude = sqrt((double)x * x + (double)y * y);
+
+    reset();
+    setSpeed((int)magnitude);
+    setMaxSpeed((int)magnitude);
+
+    // don't allow more than a meter at a time
+    x = x > MAX_DISTANCE ? MAX_DISTANCE : x;
+    y = y > MAX_DISTANCE ? MAX_DISTANCE : y;
+
+    translate(x, y);
+  }
+
+  void translate(long xDistance, long yDistance)
+  {
+    Serial.print("MOTORS: TRANSLATE (");
+    Serial.print(xDistance);
+    Serial.print(", ");
+    Serial.print(yDistance);
+    Serial.println(")");
 
     reset();
 
@@ -120,10 +171,19 @@ namespace Motors
 
   void rotate(long distance)
   {
+    Serial.print("MOTORS: ROTATE "); Serial.println(distance);
     reset();
 
     long positions[] = {distance, distance, distance, distance};
     steppers.moveTo(positions);
+  }
+
+  void turn(long speed)
+  {
+    setSpeed(fabs(speed));
+    setMaxSpeed(fabs(speed));
+
+    rotate(MAX_DISTANCE / 2);
   }
 
 }

@@ -34,15 +34,28 @@ namespace Motors
    */
   void commit();
 
+  void setSpeed(int speed);
   void setMaxSpeed(int speed);
   void setAcceleration(int accel);
+
+  /**
+   * Begin moving in a particular direction. Speed is indicated by the
+   * @param xDistance Positive values => right. Negative values => left.
+   * @param yDistance Positive values => forward. Negative values => backwards,
+   */
+  void move(long x, long y);
 
   /**
    * How many units to move along the x and y axis
    * @param xDistance Positive values => right. Negative values => left.
    * @param yDistance Positive values => forward. Negative values => backwards,
    */
-  void move(long xDistance, long yDistance);
+  void translate(long xDistance, long yDistance);
+
+  /**
+   * Rotate at a particular speed
+   */
+  void turn(long speed);
 
   /**
    * Number of units to rotate.
