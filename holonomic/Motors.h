@@ -34,6 +34,7 @@ namespace Motors
    */
   void commit();
 
+  void setSpeed(int speed);
   void setMaxSpeed(int speed);
   void setAcceleration(int accel);
 
@@ -42,7 +43,7 @@ namespace Motors
    * @param xDistance Positive values => right. Negative values => left.
    * @param yDistance Positive values => forward. Negative values => backwards,
    */
-  void move(long xDistance, long yDistance);
+  void translate(long xDistance, long yDistance);
 
   /**
    * Number of units to rotate.
