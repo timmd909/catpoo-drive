@@ -67,24 +67,40 @@ namespace Comms
 
     if (0 == strcmp(token, "DANCE")) {
       Tests::dance();
+
     } else if (0 == strcmp(token, "WHEEL")) {
       Tests::wheel();
+
     } else if (0 == strcmp(token, "RESET")) {
       Motors::reset();
+
     } else if (0 == strcmp(token, "TRANSLATE")) {
       int xDistance = atoi(strtok(NULL, " "));
       int yDistance = atoi(strtok(NULL, " "));
       Motors::translate(xDistance, yDistance);
+
+    } else if (0 == strcmp(token, "MOVE")) {
+      int xDistance = atoi(strtok(NULL, " "));
+      int yDistance = atoi(strtok(NULL, " "));
+      Motors::move(xDistance, yDistance);
+
+    } else if (0 == strcmp(token, "TURN")) {
+      int rotation = atoi(strtok(NULL, " "));
+      Motors::turn(rotation);
+
     } else if (0 == strcmp(token, "ROTATE")) {
       int rotation = atoi(strtok(NULL, " "));
       Motors::rotate(rotation);
+
     } else if (0 == strcmp(token, "SPEED")) {
       int speed = atoi(strtok(NULL, " "));
       Motors::setSpeed(speed);
       Motors::setMaxSpeed(speed);
+
     } else {
       Serial.print("DAFUQ: ");
       Serial.println(receiveBuffer);
+
     }
 
     // cleanup: wipe and reset the receive buffer
