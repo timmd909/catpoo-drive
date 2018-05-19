@@ -22,11 +22,17 @@ namespace Comms
 
   void i2cReceive(int numBytes)
   {
+    if (Wire.available())
+    {
+      Serial.print("I2C: ");
+    }
     while (Wire.available())
     {
       char c = Wire.read();
-      Serial.print("I2C: ");
-      Serial.print((char)c);
+      Serial.print("0x");
+      if (c < 16) { Serial.print("0"); }
+      Serial.print(c, HEX);
+      Serial.print(" ");
     }
     Serial.print("\n");
     // ...
