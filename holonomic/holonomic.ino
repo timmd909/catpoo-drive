@@ -3,7 +3,7 @@
  */
 
 //#include <AccelStepper.h>
-//#include "Comms.h"
+#include "Comms.h"
 #include "Motors.h"
 #include "Tests.h"
 #include "pins.h"
@@ -24,7 +24,7 @@ void setup()
   pinMode(A4, INPUT);
   pinMode(A5, INPUT);
 
-  //Comms::init();
+  Comms::init();
   Motors::init();
 
   Serial.println("INIT COMPLETE");
@@ -57,46 +57,10 @@ void printValue(char *description, int value)
 
 void loop()
 {
+  Serial.print("Starting Loop...");
+  
   Motors::loop();
+  Comms::loop();
 
-  static bool firstTime = true;
-
-  if (firstTime) {
-    firstTime = false; 
-    Tests::dance();    
-  }
-
-//  int a0;
-//  int a1;
-//  int a2;
-//  int a3;
-//  int a4;
-//  int a5;
-//  char buffer[1024];
-//  sprintf(
-//    buffer,
-//    "%4d %4d %4d %4d",
-//    Motors::flStepper.currentPosition(),
-//    Motors::frStepper.currentPosition(),
-//    Motors::brStepper.currentPosition(),
-//    Motors::blStepper.currentPosition()
-//   );
-//  Serial.println(buffer);
-//  
-//  a0 = analogRead(A0);
-//  a1 = analogRead(A1);
-//  a2 = analogRead(A2);
-//  a3 = analogRead(A3);
-//  a4 = analogRead(A4);
-//  a5 = analogRead(A5);
-//
-//  printValue("A0", a0);
-//  printValue("A1", a1);
-//  printValue("A2", a2);
-//  printValue("A3", a3);
-//  printValue("A4", a4);
-//  printValue("A5", a5);
-//
-//  Serial.println("\n");
 }
 

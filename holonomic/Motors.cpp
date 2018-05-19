@@ -4,10 +4,10 @@
 
 namespace Motors
 {
-	const int PULSE_MIN_WIDTH = 2;
+	const int PULSE_MIN_WIDTH = 5;
 	const int STEPS_PER_REVOLUTION = 200;
-	const int MAX_SPEED = 500;
-	const int MAX_ACCELERATION = 50;
+	const int MAX_SPEED = 200;
+	const int MAX_ACCELERATION = 10;
 
   const double SQRT2 = sqrt(2.0f);
 
@@ -59,7 +59,6 @@ namespace Motors
     steppers.addStepper(blStepper);
 
     Motors::reset();
-    
   }
 
 	void reset()
@@ -68,6 +67,7 @@ namespace Motors
 		frStepper.setCurrentPosition(0);
 		brStepper.setCurrentPosition(0);
 		blStepper.setCurrentPosition(0);
+    steppers.moveTo(0);
 	}
 
 	void commit()
@@ -77,6 +77,10 @@ namespace Motors
 
 	void loop()
 	{
+    Serial.print("FL ");
+    Serial.print(flStepper.currentPosition());
+    Serial.print(" -> ");
+    Serial.println(flStepper.targetPosition());
 		steppers.run();
 	}
 
