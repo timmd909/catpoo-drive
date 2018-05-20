@@ -3,6 +3,8 @@
  */
 
 //#include <AccelStepper.h>
+#include <Arduino.h>
+#include "Commands.h"
 #include "Comms.h"
 #include "Motors.h"
 #include "Tests.h"

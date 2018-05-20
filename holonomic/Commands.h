@@ -1,22 +1,25 @@
 #ifndef __DRIVE_COMMANDS_H_
 #define __DRIVE_COMMANDS_H_
 
-#include <queue>
+#include <QueueArray.h>
 
-namespace Commands {
-  const int RESET = 0x01;
-  const int SPEED = 0x02;
+namespace Commands
+{
+  extern const int RESET;
+  extern const int SET_SPEED;
 
-  const int ROTATE = 0x10;
-  const int TRANSLATE = 0x20;
+  extern const int ROTATE;
+  extern const int TRANSLATE;
 
-  const int TURN = 0x11;
-  const int MOVE = 0x21;
+  extern const int TURN;
+  extern const int MOVE;
 
-  const int WHEEL = 0x68;
-  const int DANCE = 0x69;
+  extern const int WHEEL;
+  extern const int DANCE;
 
-  extern std::queue <char> commandQueue;
+  extern QueueArray <char> commandQueue;
+
+  void processQueue();
 }
 
 

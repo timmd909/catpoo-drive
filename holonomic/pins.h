@@ -16,3 +16,8 @@
 #define MOTOR_BL_STEP 11
 
 #endif
+
+// command line compilation issue workaround:
+#ifndef LED_BUILTIN
+#define LED_BUILTIN 13
+#endif
