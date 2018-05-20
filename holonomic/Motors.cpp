@@ -6,8 +6,8 @@ namespace Motors
 {
   const int PULSE_MIN_WIDTH = 5;
   const int STEPS_PER_REVOLUTION = 200;
-  const int MAX_SPEED = 300;
-  const int MAX_ACCELERATION = 300;
+  const int MAX_SPEED = 250;
+  const int MAX_ACCELERATION = 250;
   const int MAX_DISTANCE = 1000;
 
   const double SQRT2 = sqrt(2.0f);
