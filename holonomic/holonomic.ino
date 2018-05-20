@@ -3,6 +3,8 @@
  */
 
 //#include <AccelStepper.h>
+#include <Arduino.h>
+#include "Commands.h"
 #include "Comms.h"
 #include "Motors.h"
 #include "Tests.h"
@@ -30,7 +32,6 @@ void setup()
   Serial.println("INIT COMPLETE");
 }
 
-
 int count = 0;
 
 void printValue(char *description, int value)
@@ -52,6 +53,12 @@ void printValue(char *description, int value)
 
 void loop()
 {
-  Motors::loop();
+  // collect commands from the serial or I2C bus
   Comms::loop();
+
+  // process the collected commands
+  Commands::processQueue();
+
+  // Advance the stepper motors as required
+  Motors::loop();
 }

@@ -10,10 +10,10 @@ namespace Tests
   // clockwise 1 revolution, then 1 revolution counterclockwise.
   void wheel()
   {
-    Serial.println("RUNNING TEST: WHEEL");
+    Serial.println("WHEEL TEST");
     Motors::reset();
 
-    int distance = Motors::STEPS_PER_REVOLUTION;
+    int distance = STEPS_PER_REVOLUTION;
 
     Motors::flStepper.runToNewPosition(distance);
     Motors::flStepper.runToNewPosition(0);
@@ -26,14 +26,12 @@ namespace Tests
 
     Motors::blStepper.runToNewPosition(distance);
     Motors::blStepper.runToNewPosition(0);
-
-    Serial.println("TEST COMPLETE");
   }
 
   void dance()
   {
-    Serial.println("RUNNING TEST: DANCE");
-    long distance = Motors::STEPS_PER_REVOLUTION / 4;
+    Serial.println("DANCING");
+    long distance = STEPS_PER_REVOLUTION / 4;
 
     //
     // rotate a bit
@@ -91,8 +89,6 @@ namespace Tests
 
     Motors::translate(-distance, -distance); Motors::commit();
     Motors::translate(distance, distance);   Motors::commit();
-
-    Serial.println("TEST COMPLETE");
   }
 
 }

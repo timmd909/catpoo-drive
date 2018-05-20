@@ -4,12 +4,6 @@
 
 namespace Motors
 {
-  const int PULSE_MIN_WIDTH = 5;
-  const int STEPS_PER_REVOLUTION = 200;
-  const int MAX_SPEED = 300;
-  const int MAX_ACCELERATION = 300;
-  const int MAX_DISTANCE = 1000;
-
   const double SQRT2 = sqrt(2.0f);
 
   MultiStepper steppers = MultiStepper();
@@ -116,26 +110,26 @@ namespace Motors
     steppers.run();
   }
 
-  void move(long x, long y)
-  {
-    Serial.print("MOTORS: MOVE (");
-    Serial.print(x);
-    Serial.print(", ");
-    Serial.print(y);
-    Serial.println(")");
-
-    double magnitude = sqrt((double)x * x + (double)y * y);
-
-    reset();
-    setSpeed((int)magnitude);
-    setMaxSpeed((int)magnitude);
-
-    // don't allow more than a meter at a time
-    x = x > MAX_DISTANCE ? MAX_DISTANCE : x;
-    y = y > MAX_DISTANCE ? MAX_DISTANCE : y;
-
-    translate(x, y);
-  }
+  // void move(long x, long y)
+  // {
+  //   Serial.print("MOTORS: MOVE (");
+  //   Serial.print(x);
+  //   Serial.print(", ");
+  //   Serial.print(y);
+  //   Serial.println(")");
+  //
+  //   double magnitude = sqrt((double)x * x + (double)y * y);
+  //
+  //   reset();
+  //   setSpeed((int)magnitude);
+  //   setMaxSpeed((int)magnitude);
+  //
+  //   // don't allow more than a meter at a time
+  //   x = x > MAX_DISTANCE ? MAX_DISTANCE : x;
+  //   y = y > MAX_DISTANCE ? MAX_DISTANCE : y;
+  //
+  //   translate(x, y);
+  // }
 
   void translate(long xDistance, long yDistance)
   {
@@ -171,19 +165,19 @@ namespace Motors
 
   void rotate(long distance)
   {
-    Serial.print("MOTORS: ROTATE "); Serial.println(distance);
+    Serial.print("ROTATING "); Serial.println(distance);
     reset();
 
     long positions[] = {distance, distance, distance, distance};
     steppers.moveTo(positions);
   }
 
-  void turn(long speed)
-  {
-    setSpeed(fabs(speed));
-    setMaxSpeed(fabs(speed));
-
-    rotate(MAX_DISTANCE / 2);
-  }
+  // void turn(long speed)
+  // {
+  //   setSpeed(fabs(speed));
+  //   setMaxSpeed(fabs(speed));
+  //
+  //   rotate(MAX_DISTANCE / 2);
+  // }
 
 }

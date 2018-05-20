@@ -1,0 +1,27 @@
+#!/bin/bash
+
+pushd `dirname $0`
+
+echo "################ Recreating libraries/ ################"
+rm -rf libraries # delete anything that's there before we repopulate
+mkdir libraries
+cd libraries
+
+curl http://www.airspayce.com/mikem/arduino/AccelStepper/AccelStepper-1.58.zip > AccelStepper.zip
+curl https://playground.arduino.cc/uploads/Code/QueueArray.zip > QueueArray.zip
+
+echo "################ Unzipping libraries ################"
+for X in *.zip; do
+# STUB="`echo $X | sed 's/\.zip$//'`"
+# unzip "$STUB.zip"
+# rm "$STUB.zip"
+  unzip "$X"
+  rm "$X"
+done
+
+echo "################ Clean up ################"
+# Mac OS X developers are inconsiderate. Don't be you be messing up
+# my shit, man... ooooh, heeellll noooo.
+rm -rfv __MACOSX/
+
+popd > /dev/null 2>&1
