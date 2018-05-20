@@ -1,6 +1,7 @@
 #include <HardwareSerial.h>
 #include <Wire.h>
 #include "Comms.h"
+#include "Commands.h"
 #include "Motors.h"
 #include "Tests.h"
 
@@ -28,14 +29,21 @@ namespace Comms
     }
     while (Wire.available())
     {
-      char c = Wire.read();
+      int c = Wire.read();
       Serial.print("0x");
       if (c < 16) { Serial.print("0"); }
       Serial.print(c, HEX);
       Serial.print(" ");
+      if (c == Commands::DANCE) {
+        // Tests::dance();
+        Serial.println("Dance time");
+      } else if (c == Commands::WHEEL) {
+        // Tests::wheel();
+        Serial.println("Wheel test");
+      }
+
     }
     Serial.print("\n");
-    // ...
   }
 
   void init()
@@ -55,7 +63,7 @@ namespace Comms
     receiveBufferIndex = 0;
   }
 
-  void processBuffer()
+  void processSerialBuffer()
   {
     char* token;
 
@@ -66,41 +74,32 @@ namespace Comms
     token = tokenStr.c_str();
 
     if (0 == strcmp(token, "DANCE")) {
-      Tests::dance();
-
+      Commands::commandQueue.push(Commands::DANCE);
     } else if (0 == strcmp(token, "WHEEL")) {
-      Tests::wheel();
-
+      Commands::commandQueue.push(Commands::WHEEL);
     } else if (0 == strcmp(token, "RESET")) {
-      Motors::reset();
-
+      Commands::commandQueue.push(Commands::RESET);
     } else if (0 == strcmp(token, "TRANSLATE")) {
       int xDistance = atoi(strtok(NULL, " "));
       int yDistance = atoi(strtok(NULL, " "));
       Motors::translate(xDistance, yDistance);
-
     } else if (0 == strcmp(token, "MOVE")) {
       int xDistance = atoi(strtok(NULL, " "));
       int yDistance = atoi(strtok(NULL, " "));
       Motors::move(xDistance, yDistance);
-
     } else if (0 == strcmp(token, "TURN")) {
-      int rotation = atoi(strtok(NULL, " "));
-      Motors::turn(rotation);
-
+      int speed = atoi(strtok(NULL, " "));
+      Motors::turn(speed);
     } else if (0 == strcmp(token, "ROTATE")) {
       int rotation = atoi(strtok(NULL, " "));
       Motors::rotate(rotation);
-
     } else if (0 == strcmp(token, "SPEED")) {
       int speed = atoi(strtok(NULL, " "));
       Motors::setSpeed(speed);
       Motors::setMaxSpeed(speed);
-
     } else {
       Serial.print("DAFUQ: ");
       Serial.println(receiveBuffer);
-
     }
 
     // cleanup: wipe and reset the receive buffer
@@ -120,7 +119,7 @@ namespace Comms
       // did we get a newline yet?
       if (nextByte == '\n') {
         // yup! process that!
-        processBuffer();
+        processSerialBuffer();
       }
     }
 

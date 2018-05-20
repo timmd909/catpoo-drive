@@ -8,35 +8,41 @@ functionality necessary to get the robot moving.
 
 ## Commands
 
-* `0x00` - `RESET`
+* `0x01` - `RESET`
     * Halt all movement and reset all internal variables
 
-* `0x01` - `ROTATE d`
+* `0x02` - `SPEED s`
+	* Speed that the `TRANSLATE` and `ROTATE` commands use
+
+* `0x10` - `ROTATE d`
     * Rotate a certain number of millimeters.
 	* Positive = counter-clockwise
 	* Negative = clockwise
 
-* `0x02` - `TRANSLATE x y`
+* `0x20` - `TRANSLATE x y`
     * Move a certain number of millimeters along the X and Y axis
 	* Positive X => right
 	* Negative X => left
 	* Positive Y => forward
 	* Negative Y => backward
 
-* `0x03` - `SPEED s`
-	* Speed that the `TRANSLATE` and `ROTATE` commands use
-
-* `0X04` - `TURN ds`
+* `0X11` - `TURN ds`
 	* Begin turning at a particular speed `ds`
 	* Positive = counter-clockwise
 	* Negative = clockwise
 
-* `0X05` - `MOVE xs ys`
+* `0X21` - `MOVE xs ys`
 	* Begin moving in a particular direction and speed specified by `xs` and `ys`
 	* Positive X => right
 	* Negative X => left
 	* Positive Y => forward
 	* Negative Y => backward
+
+* `0x68` - `WHEEL`
+	* Rotate wheels, one at a time, in order
+
+* `0x69` - `DANCE`
+	* Number was chosen at random
 
 ## Thoughts
 
