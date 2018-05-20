@@ -49,8 +49,6 @@ namespace Motors
 
   void reset()
   {
-    Serial.println("MOTORS: RESET");
-
     flStepper.setCurrentPosition(0);
     frStepper.setCurrentPosition(0);
     brStepper.setCurrentPosition(0);
@@ -65,8 +63,6 @@ namespace Motors
     if (speed > MAX_SPEED) {
       speed = MAX_SPEED;
     }
-    Serial.print("MOTORS: SET SPEED ");
-    Serial.println(speed);
     flStepper.setSpeed(speed);
     frStepper.setSpeed(speed);
     brStepper.setSpeed(speed);
@@ -78,8 +74,6 @@ namespace Motors
     if (speed > MAX_SPEED) {
       speed = MAX_SPEED;
     }
-    Serial.print("MOTORS: SET MAX SPEED ");
-    Serial.println(speed);
     flStepper.setMaxSpeed(speed);
     frStepper.setMaxSpeed(speed);
     brStepper.setMaxSpeed(speed);
@@ -91,8 +85,6 @@ namespace Motors
     if (accel > MAX_ACCELERATION) {
       accel = MAX_ACCELERATION;
     }
-    Serial.print("MOTORS: SET ACCEL ");
-    Serial.println(accel);
     flStepper.setAcceleration(accel);
     frStepper.setAcceleration(accel);
     brStepper.setAcceleration(accel);
@@ -101,7 +93,6 @@ namespace Motors
 
   void commit()
   {
-    Serial.println("MOTORS: COMMIT");
     Motors::steppers.runSpeedToPosition();
   }
 
@@ -112,12 +103,6 @@ namespace Motors
 
   // void move(long x, long y)
   // {
-  //   Serial.print("MOTORS: MOVE (");
-  //   Serial.print(x);
-  //   Serial.print(", ");
-  //   Serial.print(y);
-  //   Serial.println(")");
-  //
   //   double magnitude = sqrt((double)x * x + (double)y * y);
   //
   //   reset();
@@ -133,12 +118,6 @@ namespace Motors
 
   void translate(long xDistance, long yDistance)
   {
-    Serial.print("MOTORS: TRANSLATE (");
-    Serial.print(xDistance);
-    Serial.print(", ");
-    Serial.print(yDistance);
-    Serial.println(")");
-
     reset();
 
     double fl_X, fr_X, bl_X, br_X;

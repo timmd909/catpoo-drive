@@ -57,10 +57,9 @@ namespace Commands
       break;
 
       case SET_SPEED:
-        if (commandQueue.count() < 3) {
-          Serial.println("Waiting on parameter. ");
-          Serial.println(commandQueue.count());
-          return;
+        if (commandQueue.count() < 3)
+        {
+          return; // input not yet available
         }
         commandQueue.pop();
         arg1 = popShort();
@@ -69,10 +68,9 @@ namespace Commands
       break;
 
       // case TURN:
-      //   if (commandQueue.count() < 3) {
-      //     Serial.print("Waiting on TURN parameter. ");
-      //     Serial.println(commandQueue.count());
-      //     return;
+      //   if (commandQueue.count() < 3)
+      //   {
+      //     return; // input not yet available
       //   }
       //   commandQueue.pop();
       //   arg1 = popShort();
@@ -80,10 +78,9 @@ namespace Commands
       // break;
       //
       // case MOVE:
-      //   if (commandQueue.count() < 5) {
-      //     Serial.println("Waiting on MOVE parameters. ");
-      //     Serial.println(commandQueue.count());
-      //     return;
+      //   if (commandQueue.count() < 5)
+      //   {
+      //     return; // input not yet available
       //   }
       //   commandQueue.pop();
       //   arg1 = popShort();
@@ -92,10 +89,9 @@ namespace Commands
       // break;
 
       case ROTATE:
-        if (commandQueue.count() < 3) {
-          Serial.println("Waiting on ROTATE parameter. ");
-          Serial.println(commandQueue.count());
-          return;
+        if (commandQueue.count() < 3)
+        {
+          return; // input not yet available
         }
         commandQueue.pop();
         arg1 = popShort();
@@ -103,9 +99,9 @@ namespace Commands
       break;
 
       case TRANSLATE:
-        if (commandQueue.count() < 5) {
-          Serial.println("Waiting on TRANSLATE parameters. ");
-          Serial.println(commandQueue.count());
+        if (commandQueue.count() < 5)
+        {
+          return; // input not yet available
           return;
         }
         commandQueue.pop();
