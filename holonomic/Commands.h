@@ -9,8 +9,8 @@
 #define ROTATE 0x10
 #define TRANSLATE 0x20
 
-// #define TURN 0x11
-// #define MOVE 0x21
+#define TURN 0x11
+#define MOVE 0x21
 
 #define WHEEL 0x68
 #define DANCE 0x69
