@@ -4,52 +4,122 @@
 
 namespace Commands
 {
-  const int RESET = 0x01;
-  const int SET_SPEED = 0x02;
+  QueueArray <long> commandQueue;
 
-  const int ROTATE = 0x10;
-  const int TRANSLATE = 0x20;
+  int popShort()
+  {
+    // Serial.print("Popping short ");
+    short low = commandQueue.pop();
+    short high = commandQueue.pop();
+    short result = (low & 0xff) | ((high & 0xff) << 8 & 0xff00);
+    // Serial.print(result);
+    // Serial.println("");
+    // Serial.println("POP DONE. REMAINING: ");
+    // Serial.print(commandQueue.count());
+    // Serial.println("");
+    return result;
+  }
 
-  const int TURN = 0x11;
-  const int MOVE = 0x21;
-
-  const int WHEEL = 0x68;
-  const int DANCE = 0x69;
-
-  QueueArray <char> commandQueue;
+  void emptyQueue()
+  {
+    Serial.println("Dumping command queue");
+    long c = commandQueue.pop();
+    Serial.println(c);
+  }
 
   void processQueue()
   {
     char command;
-    int speed;
+    int arg1, arg2;
 
-    while (!commandQueue.isEmpty())
+    if (commandQueue.isEmpty())
     {
-      command = commandQueue.pop();
-      switch (command)
-      {
-        case RESET:
-          Motors::reset();
-        break;
+      return; // no commands pending
+    }
 
-        case SPEED:
-          speed = (int) commandQueue.pop();
-          Motors::setSpeed(speed);
-          Motors::setMaxSpeed(speed);
-        break;
+    command = commandQueue.peek();
 
-        case WHEEL:
-          Tests::wheel();
-        break;
+    switch (command)
+    {
+      case RESET:
+        commandQueue.pop();
+        Motors::reset();
+      break;
 
-        case DANCE:
-          Tests::dance();
-        break;
+      case WHEEL:
+        commandQueue.pop();
+        Tests::wheel();
+      break;
 
-        default:
-          Serial.print("ERROR: ");
-          Serial.println(command, HEX);
-      }
+      case DANCE:
+        commandQueue.pop();
+        Tests::dance();
+      break;
+
+      case SET_SPEED:
+        if (commandQueue.count() < 3) {
+          Serial.println("Waiting on parameter. ");
+          Serial.println(commandQueue.count());
+          return;
+        }
+        commandQueue.pop();
+        arg1 = popShort();
+        Motors::setSpeed(arg1);
+        Motors::setMaxSpeed(arg1);
+      break;
+
+      // case TURN:
+      //   if (commandQueue.count() < 3) {
+      //     Serial.print("Waiting on TURN parameter. ");
+      //     Serial.println(commandQueue.count());
+      //     return;
+      //   }
+      //   commandQueue.pop();
+      //   arg1 = popShort();
+      //   Motors::turn(arg1);
+      // break;
+      //
+      // case MOVE:
+      //   if (commandQueue.count() < 5) {
+      //     Serial.println("Waiting on MOVE parameters. ");
+      //     Serial.println(commandQueue.count());
+      //     return;
+      //   }
+      //   commandQueue.pop();
+      //   arg1 = popShort();
+      //   arg2 = popShort();
+      //   Motors::move(arg1, arg2);
+      // break;
+
+      case ROTATE:
+        if (commandQueue.count() < 3) {
+          Serial.println("Waiting on ROTATE parameter. ");
+          Serial.println(commandQueue.count());
+          return;
+        }
+        commandQueue.pop();
+        arg1 = popShort();
+        Motors::rotate(arg1);
+      break;
+
+      case TRANSLATE:
+        if (commandQueue.count() < 5) {
+          Serial.println("Waiting on TRANSLATE parameters. ");
+          Serial.println(commandQueue.count());
+          return;
+        }
+        commandQueue.pop();
+        arg1 = popShort();
+        arg2 = popShort();
+        Motors::translate(arg1, arg2);
+      break;
+
+      default:
+        Serial.print("???: 0x");
+        Serial.print((unsigned int)command, HEX);
+        Serial.println("  WTF?");
+        commandQueue.pop();
+      break;
     }
 
     return;

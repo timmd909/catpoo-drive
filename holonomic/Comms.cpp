@@ -7,12 +7,10 @@
 
 extern Serial_ Serial;
 
+using namespace Commands;
+
 namespace Comms
 {
-  const int I2C_ADDR = 0x45;
-
-  const int COMM_BUFFER_LENGTH = 1024;
-
   char receiveBuffer[COMM_BUFFER_LENGTH];
   int receiveBufferIndex = 0;
 
@@ -23,24 +21,11 @@ namespace Comms
 
   void i2cReceive(int numBytes)
   {
-    if (Wire.available())
-    {
-      Serial.print("I2C: ");
-    }
     while (Wire.available())
     {
-      int c = Wire.read();
-
-      // print out recv'd characters for debugging
-      Serial.print("0x");
-      if (c < 16) { Serial.print("0"); }
-      Serial.print(c, HEX);
-      Serial.print(" ");
-
-      // pass through to the command command queue
-      Commands::commandQueue.push(c);
+      int nextByte = Wire.read();
+      commandQueue.push(nextByte);
     }
-    Serial.print("\n");
   }
 
   void init()
@@ -55,7 +40,6 @@ namespace Comms
 
   void resetBuffer()
   {
-    Serial.println("COMMS: OK");
     memset(receiveBuffer, 0, COMM_BUFFER_LENGTH);
     receiveBufferIndex = 0;
   }

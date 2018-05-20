@@ -4,13 +4,14 @@
 #include <AccelStepper.h>
 #include <MultiStepper.h>
 
+#define PULSE_MIN_WIDTH 5
+#define STEPS_PER_REVOLUTION 200
+#define MAX_SPEED 250
+#define MAX_ACCELERATION 250
+#define MAX_DISTANCE 10000
+
 namespace Motors
 {
-  extern const int PULSE_MIN_WIDTH;
-  extern const int STEPS_PER_REVOLUTION;
-  extern const int MAX_SPEED;
-  extern const int MAX_ACCELERATION;
-
   extern MultiStepper steppers;
   extern AccelStepper flStepper;
   extern AccelStepper frStepper;
@@ -38,12 +39,17 @@ namespace Motors
   void setMaxSpeed(int speed);
   void setAcceleration(int accel);
 
-  /**
-   * Begin moving in a particular direction. Speed is indicated by the
-   * @param xDistance Positive values => right. Negative values => left.
-   * @param yDistance Positive values => forward. Negative values => backwards,
-   */
-  void move(long x, long y);
+  // /**
+  //  * Begin moving in a particular direction. Speed is indicated by the
+  //  * @param xDistance Positive values => right. Negative values => left.
+  //  * @param yDistance Positive values => forward. Negative values => backwards,
+  //  */
+  // void move(long x, long y);
+  //
+  // /**
+  //  * Rotate at a particular speed
+  //  */
+  // void turn(long speed);
 
   /**
    * How many units to move along the x and y axis
@@ -51,11 +57,6 @@ namespace Motors
    * @param yDistance Positive values => forward. Negative values => backwards,
    */
   void translate(long xDistance, long yDistance);
-
-  /**
-   * Rotate at a particular speed
-   */
-  void turn(long speed);
 
   /**
    * Number of units to rotate.
