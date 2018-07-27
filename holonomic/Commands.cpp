@@ -1,5 +1,5 @@
+#include "holonomic.h"
 #include "Commands.h"
-#include "Motors.h"
 #include "Tests.h"
 
 namespace Commands
@@ -27,7 +27,7 @@ namespace Commands
     Serial.println(c);
   }
 
-  void processQueue()
+  void process()
   {
     char command;
     int arg1, arg2;
@@ -43,7 +43,7 @@ namespace Commands
     {
       case RESET:
         commandQueue.pop();
-        Motors::reset();
+        platform.stop();
       break;
 
       case WHEEL:
@@ -56,59 +56,58 @@ namespace Commands
         Tests::dance();
       break;
 
-      case SET_SPEED:
-        if (commandQueue.count() < 3)
-        {
-          return; // input not yet available
-        }
-        commandQueue.pop();
-        arg1 = popShort();
-        Motors::setSpeed(arg1);
-        Motors::setMaxSpeed(arg1);
-      break;
-
-      // case TURN:
+      // case SET_SPEED:
       //   if (commandQueue.count() < 3)
       //   {
       //     return; // input not yet available
       //   }
       //   commandQueue.pop();
       //   arg1 = popShort();
-      //   Motors::turn(arg1);
-      // break;
-      //
-      // case MOVE:
-      //   if (commandQueue.count() < 5)
-      //   {
-      //     return; // input not yet available
-      //   }
-      //   commandQueue.pop();
-      //   arg1 = popShort();
-      //   arg2 = popShort();
-      //   Motors::move(arg1, arg2);
+      //   platform.setSpeed(arg1);
       // break;
 
-      case ROTATE:
+      case TURN:
         if (commandQueue.count() < 3)
         {
           return; // input not yet available
         }
         commandQueue.pop();
         arg1 = popShort();
-        Motors::rotate(arg1);
+        platform.setVelocity(0, 0, arg1);
       break;
 
-      case TRANSLATE:
+      case MOVE:
         if (commandQueue.count() < 5)
         {
           return; // input not yet available
-          return;
         }
         commandQueue.pop();
         arg1 = popShort();
         arg2 = popShort();
-        Motors::translate(arg1, arg2);
+        platform.setVelocity(arg1, arg2, 0);
       break;
+
+      // case ROTATE:
+      //   if (commandQueue.count() < 3)
+      //   {
+      //     return; // input not yet available
+      //   }
+      //   commandQueue.pop();
+      //   arg1 = popShort();
+      //   platform.setVelocity(0, 0, arg1);
+      // break;
+      //
+      // case TRANSLATE:
+      //   if (commandQueue.count() < 5)
+      //   {
+      //     return; // input not yet available
+      //     return;
+      //   }
+      //   commandQueue.pop();
+      //   arg1 = popShort();
+      //   arg2 = popShort();
+      //   platform.setVelocity(arg1, arg2, 0);
+      // break;
 
       default:
         Serial.print("???: 0x");
@@ -119,5 +118,5 @@ namespace Commands
     }
 
     return;
-  } // void processQueue()
+  } // void process()
 }

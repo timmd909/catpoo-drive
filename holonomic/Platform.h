@@ -1,6 +1,9 @@
 #ifndef __CATPOO_PLATFORM_H__
 #define __CATPOO_PLATFORM_H__
 
+#include <AccelStepper.h>
+#include <MultiStepper.h>
+
 #include "Motor.h"
 
 class Platform

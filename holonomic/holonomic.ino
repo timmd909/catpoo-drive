@@ -2,13 +2,33 @@
  * Main loop and callbacks for the holonomic drive
  */
 
-//#include <AccelStepper.h>
 #include <Arduino.h>
+#include <Wire.h>
+#include "holonomic.h"
+
 #include "Commands.h"
-#include "Comms.h"
-#include "Motors.h"
+#include "Platform3.h"
 #include "Tests.h"
-#include "pins.h"
+
+Platform3 platform;
+// Platform4 platform;
+
+namespace
+{
+  void i2cRequest()
+  {
+    Serial.println("i2c request ignored");
+  }
+
+  void i2cReceive(int numBytes)
+  {
+    while (Wire.available())
+    {
+      int nextByte = Wire.read();
+      Commands::commandQueue.push(nextByte);
+    }
+  }
+}
 
 void setup()
 {
@@ -19,46 +39,18 @@ void setup()
   Serial.println("INITIALIZING");
 
   pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(A0, INPUT);
-  pinMode(A1, INPUT);
-  pinMode(A2, INPUT);
-  pinMode(A3, INPUT);
-  pinMode(A4, INPUT);
-  pinMode(A5, INPUT);
 
-  Comms::init();
-  Motors::init();
+  platform.init();
+
+  Wire.begin(I2C_ADDR);
+  Wire.onRequest(i2cRequest);
+  Wire.onReceive(i2cReceive);
 
   Serial.println("INIT COMPLETE");
 }
 
-int count = 0;
-
-void printValue(char *description, int value)
-{
-  int lowRes = value >> 7;
-//  Serial.print(lowRes);
-  int i;
-  Serial.print("[");
-  Serial.print(description);
-  Serial.print(" ");
-  for (i=0; i < lowRes; i++) {
-    Serial.print("=");
-  }
-  for (; i < 8; i++) {
-    Serial.print(" ");
-  }
-  Serial.print("]");
-}
-
 void loop()
 {
-  // collect commands from the serial or I2C bus
-  Comms::loop();
-
-  // process the collected commands
-  Commands::processQueue();
-
-  // Advance the stepper motors as required
-  Motors::loop();
+  Commands::process();
+  platform.update();
 }

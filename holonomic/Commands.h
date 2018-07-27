@@ -19,7 +19,7 @@ namespace Commands
 {
   extern QueueArray <long> commandQueue;
 
-  void processQueue();
+  void process();
 }
 
 
