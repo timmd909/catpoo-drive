@@ -2,6 +2,7 @@
 #define __DRIVE_COMMANDS_H_
 
 #include <QueueArray.h>
+#include "Platform.h"
 
 #define RESET 0x01
 #define SET_SPEED 0x02
@@ -20,6 +21,7 @@ namespace Commands
   extern QueueArray <long> commandQueue;
 
   void process();
+  void init(Platform *platform);
 }
 
 

@@ -1,7 +1,10 @@
 #include "Platform.h"
 
-Platform::Platform()
+Platform::Platform(int numMotors, Motor motors[])
 {
+  _numMotors = numMotors;
+  _motors = motors;
+
   _vX = 0;
   _vY = 0;
   _rot = 0;
@@ -13,25 +16,46 @@ Platform::Platform()
   _lastVY = 0;
 }
 
-Platform::~Platform()
-{
-  return; // nothing yet
-}
-
-void Platform::init()
-{
-  // base class doesn't do anything
-  return;
-}
-
 void Platform::update()
 {
+  int i;
+
+  //
+  // Gradually slow the platform
+  //
   if (_decayRate > 0.0f) {
-    float multiplier = 1.0f - _decayRate;
-    _vX = floor(_vX * multiplier);
-    _vY = floor(_vY * multiplier);
-    _rot = floor(_rot * multiplier);
+    float decayMultiplier = 1.0f - _decayRate;
+    _vX = floor(_vX * decayMultiplier);
+    _vY = floor(_vY * decayMultiplier);
+    _rot = floor(_rot * decayMultiplier);
   }
+
+  //
+  // Update the motor speeds
+  //
+  float angleDelta, speed;
+  float linearSpeed = sqrt(_vX * _vX  + _vY * _vY);
+  for (i = 0 ; i < _numMotors; i++) {
+    Motor *motor = &_motors[i];
+
+    // calculate the linear motion speed first
+    angleDelta = motor->getAngle() - calculateBearing();
+    speed = (1.0f / cos(angleDelta)) * linearSpeed;
+
+    // add in the rotational speed
+    speed += _rot;
+
+    // finally update the motor's speed
+    motor->setSpeed(speed);
+  }
+
+  //
+  // Update the motors internal state
+  //
+  for (i = 0 ; i < _numMotors; i++) {
+    _motors[i].update();
+  }
+
 }
 
 void Platform::setDecayRate(float decayRate)
@@ -50,10 +74,7 @@ void Platform::setVelocity(const int xSpeed, const int ySpeed, const int rotatio
   _vX = xSpeed;
   _vY = ySpeed;
   _rot = rotation;
-
-  updateMotorSpeeds();
 }
-
 
 float Platform::calculateBearing()
 {
@@ -95,47 +116,8 @@ float Platform::calculateBearing()
   return bearing;
 }
 
-void Platform::updateMotorSpeeds()
-{
-  // base class doesn't do anything
-  return;
-}
-
-void Platform::updateMotorSpeed(Motor &motor, const int angle)
-{
-  float angleDelta = angle - calculateBearing();
-  motor.setSpeed((1.0f / cos(angleDelta)) + _rot);
-}
-
-//
-// Simple command shortcuts
-//
-void Platform::forward(const int speed)
-{
-  setVelocity(0, speed, 0);
-}
-
-void Platform::backward(const int speed)
-{
-  setVelocity(0, -speed, 0);
-}
-
-void Platform::left(const int speed)
-{
-  setVelocity(-speed, 0, 0);
-}
-
-void Platform::right(const int speed)
-{
-  setVelocity(speed, 0, 0);
-}
-
-void Platform::turn(const int speed)
-{
-  setVelocity(0, 0, speed);
-}
-
 void Platform::stop()
 {
   setVelocity(0, 0, 0);
+  update();
 }

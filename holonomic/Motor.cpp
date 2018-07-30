@@ -1,26 +1,44 @@
 #include "Motor.h"
+#include "config.h"
 
-Motor::Motor()
+Motor::Motor(float angle, int stepPin, int directionPin)
 {
-  _stepPin = 0;
-  _directionPin = 0;
-
-  _angle = 0;
+  _angle = angle;
   _speed = 0;
 
-  _stepper = new AccelStepper(AccelStepper::DRIVER, _stepPin, _directionPin);
-}
-
-Motor::Motor(int stepPin, int directionPin)
-{
-  Motor();
   _directionPin = directionPin;
   _stepPin = stepPin;
+
+  pinMode(_stepPin, OUTPUT);
+  pinMode(_directionPin, OUTPUT);
+
+  _stepper = new AccelStepper(AccelStepper::DRIVER, _stepPin, _directionPin);
+  _stepper->setMaxSpeed(MAX_SPEED);
 }
 
 Motor::~Motor()
 {
-  delete _stepper;
+  // nothing here for now
+  return;
+}
+
+void Motor::update()
+{
+  _stepper->run();
+}
+
+//
+// Angle
+//
+
+void Motor::setAngle(float angle)
+{
+   _angle = angle;
+}
+
+float Motor::getAngle()
+{
+  return _angle;
 }
 
 //
@@ -36,12 +54,14 @@ void Motor::setSpeed(int speed)
   } else {
     _speed = speed;
   }
+  _stepper->setSpeed(speed);
 }
 
 int Motor::getSpeed()
 {
   return _speed;
 }
+
 
 void Motor::stop()
 {

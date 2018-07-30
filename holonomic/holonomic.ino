@@ -4,17 +4,17 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "holonomic.h"
+#include <HardwareSerial.h>
 
 #include "Commands.h"
-#include "Platform3.h"
+#include "Platform.h"
 #include "Tests.h"
-
-Platform3 platform;
-// Platform4 platform;
+#include "config.h"
 
 namespace
 {
+  Platform* platform;
+
   void i2cRequest()
   {
     Serial.println("i2c request ignored");
@@ -40,8 +40,19 @@ void setup()
 
   pinMode(LED_BUILTIN, OUTPUT);
 
-  platform.init();
+  Serial.println("Initializing motors");
+  Motor motor0(MOTOR_0_ANGLE, MOTOR_0_DIR, MOTOR_0_STEP);
+  Motor motor1(MOTOR_1_ANGLE, MOTOR_1_DIR, MOTOR_1_STEP);
+  Motor motor2(MOTOR_2_ANGLE, MOTOR_2_DIR, MOTOR_2_STEP);
 
+  Serial.println("Initializing platform");
+  Motor motors[] = {motor0, motor1, motor2};
+  platform = new Platform(3, motors);
+
+  Commands::init(platform);
+  Tests::init(platform);
+
+  Serial.println("Initializing I2C");
   Wire.begin(I2C_ADDR);
   Wire.onRequest(i2cRequest);
   Wire.onReceive(i2cReceive);
@@ -52,5 +63,5 @@ void setup()
 void loop()
 {
   Commands::process();
-  platform.update();
+  platform->update();
 }

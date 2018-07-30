@@ -1,12 +1,18 @@
 #include <HardwareSerial.h>
 
-#include "Platform3.h"
 #include "Tests.h"
 
 extern Serial_ Serial;
 
 namespace Tests
 {
+  Platform *_platform;
+
+  void init(Platform *platform)
+  {
+    _platform  = platform;
+  }
+
   // Spin the left, front, right, and back wheels 1 revolution in order
   // clockwise 1 revolution, then 1 revolution counterclockwise.
   void wheel()

@@ -4,25 +4,21 @@
 #include <AccelStepper.h>
 #include <MultiStepper.h>
 
+#include "LifeCycle.h"
 #include "Motor.h"
 
-class Platform
+class Platform : public LifeCycle
 {
-public:
-  /**
-   * Max speed the platform can move in a particular direction.
-   * The individual motors may need to go above this to match
-   * speed while rotating.
-   */
-  static const int MAX_SPEED = 200;
-  static const int NUM_MOTORS = 0;
-
 private:
   float _lastBearing;
   float _lastVX;
   float _lastVY;
 
 protected:
+  Motor* _motors;
+
+  int _numMotors;
+
   /**
    * X velocity (positive = right)
    */
@@ -44,29 +40,16 @@ protected:
   float _decayRate;
 
   /**
-   * Update all the motor speeds based on the desired velocity
-   */
-  void updateMotorSpeeds();
-
-  void updateMotorSpeed(Motor &motor, const int angle);
-
-  /**
    * @return The bearing angle of the X and Y velocities. 0 = right,
    * π/2 = forward, π = left, 3π/2 = backwards
    */
   float calculateBearing();
 
 public:
-  Platform();
-  ~Platform();
+  Platform(int numMotors, Motor motors[]);
 
   /**
-   * Call once to initialize the output pins properly
-   */
-  void init();
-
-  /**
-   * Call this function once per main loop.
+   * Call once per main loop iteration to update the platform
    */
   void update();
 
@@ -83,14 +66,6 @@ public:
    */
   void setVelocity(const int xSpeed, const int ySpeed, const int rotation);
 
-  //
-  // Simple command shortcuts
-  //
-  void forward(const int speed);
-  void backward(const int speed);
-  void left(const int speed);
-  void right(const int speed);
-  void turn(const int speed);
   void stop();
 
 };

@@ -1,10 +1,10 @@
-#include "holonomic.h"
 #include "Commands.h"
 #include "Tests.h"
 
 namespace Commands
 {
   QueueArray <long> commandQueue;
+  Platform *_platform;
 
   int popShort()
   {
@@ -27,6 +27,11 @@ namespace Commands
     Serial.println(c);
   }
 
+  void init(Platform *platform)
+  {
+    _platform  = platform;
+  }
+
   void process()
   {
     char command;
@@ -43,7 +48,7 @@ namespace Commands
     {
       case RESET:
         commandQueue.pop();
-        platform.stop();
+        _platform->stop();
       break;
 
       case WHEEL:
@@ -63,7 +68,7 @@ namespace Commands
       //   }
       //   commandQueue.pop();
       //   arg1 = popShort();
-      //   platform.setSpeed(arg1);
+      //   _platform->setSpeed(arg1);
       // break;
 
       case TURN:
@@ -73,7 +78,7 @@ namespace Commands
         }
         commandQueue.pop();
         arg1 = popShort();
-        platform.setVelocity(0, 0, arg1);
+        _platform->setVelocity(0, 0, arg1);
       break;
 
       case MOVE:
@@ -84,7 +89,7 @@ namespace Commands
         commandQueue.pop();
         arg1 = popShort();
         arg2 = popShort();
-        platform.setVelocity(arg1, arg2, 0);
+        _platform->setVelocity(arg1, arg2, 0);
       break;
 
       // case ROTATE:
@@ -94,7 +99,7 @@ namespace Commands
       //   }
       //   commandQueue.pop();
       //   arg1 = popShort();
-      //   platform.setVelocity(0, 0, arg1);
+      //   _platform->setVelocity(0, 0, arg1);
       // break;
       //
       // case TRANSLATE:
@@ -106,7 +111,7 @@ namespace Commands
       //   commandQueue.pop();
       //   arg1 = popShort();
       //   arg2 = popShort();
-      //   platform.setVelocity(arg1, arg2, 0);
+      //   _platform->setVelocity(arg1, arg2, 0);
       // break;
 
       default:

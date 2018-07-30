@@ -5,19 +5,11 @@
 
 class Motor
 {
-  // Tune these as necessary for your motors. The code currently
-  // assumes you're using compatible motors and such.
-public:
-  static const int MAX_SPEED = 250;
-  static const int PULSE_MIN_WIDTH = 5;
-  static const int STEPS_PER_REVOLUTION = 200;
-  static const int MAX_ACCELERATION = 100;
-
 protected:
 
   AccelStepper *_stepper;
 
-  int _angle;
+  float _angle;
   int _speed;
 
   int _stepPin;
@@ -25,13 +17,18 @@ protected:
 
 public:
 
-  Motor();
-  Motor(int stepPin, int directionPin);
+  Motor(float angle, int directionPin, int stepPin);
   ~Motor();
 
   void setSpeed(int speed);
   int getSpeed();
+
+  void setAngle(float angle);
+  float getAngle();
+
   void stop();
+
+  void update();
 };
 
 #endif
