@@ -14,6 +14,9 @@ Motor::Motor(float angle, int stepPin, int directionPin)
 
   _stepper = new AccelStepper(AccelStepper::DRIVER, _stepPin, _directionPin);
   _stepper->setMaxSpeed(MAX_SPEED);
+
+  Serial.print("Creating motor, angle = ");
+  Serial.println(_angle);
 }
 
 Motor::~Motor()
@@ -31,10 +34,10 @@ void Motor::update()
 // Angle
 //
 
-void Motor::setAngle(float angle)
-{
-   _angle = angle;
-}
+// void Motor::setAngle(float angle)
+// {
+//    _angle = angle;
+// }
 
 float Motor::getAngle()
 {

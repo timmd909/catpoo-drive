@@ -16,14 +16,13 @@ protected:
   int _directionPin;
 
 public:
-
   Motor(float angle, int directionPin, int stepPin);
   ~Motor();
 
   void setSpeed(int speed);
   int getSpeed();
 
-  void setAngle(float angle);
+  // void setAngle(float angle);
   float getAngle();
 
   void stop();

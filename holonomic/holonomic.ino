@@ -1,3 +1,8 @@
+#include <QueueArray.h>
+
+#include <MultiStepper.h>
+#include <AccelStepper.h>
+
 /**
  * Main loop and callbacks for the holonomic drive
  */
@@ -41,6 +46,12 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
 
   Serial.println("Initializing motors");
+  Serial.print("Motor 0 angle ");
+  Serial.println(MOTOR_0_ANGLE);
+  Serial.print("Motor 1 angle ");
+  Serial.println(MOTOR_1_ANGLE);
+  Serial.print("Motor 2 angle ");
+  Serial.println(MOTOR_2_ANGLE);
   Motor motor0(MOTOR_0_ANGLE, MOTOR_0_DIR, MOTOR_0_STEP);
   Motor motor1(MOTOR_1_ANGLE, MOTOR_1_DIR, MOTOR_1_STEP);
   Motor motor2(MOTOR_2_ANGLE, MOTOR_2_DIR, MOTOR_2_STEP);
@@ -57,6 +68,8 @@ void setup()
   Wire.onRequest(i2cRequest);
   Wire.onReceive(i2cReceive);
 
+  // platform->setVelocity(0, 100, 0);
+
   Serial.println("INIT COMPLETE");
 }
 
@@ -64,4 +77,6 @@ void loop()
 {
   Commands::process();
   platform->update();
+  Serial.println("loop");
+  delay(5000);
 }

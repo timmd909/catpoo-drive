@@ -2,7 +2,7 @@
 
 #include "Tests.h"
 
-extern Serial_ Serial;
+//extern Serial_ Serial;
 
 namespace Tests
 {

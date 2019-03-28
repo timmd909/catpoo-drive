@@ -1,7 +1,11 @@
 #ifndef __DRIVE_COMMANDS_H_
 #define __DRIVE_COMMANDS_H_
 
+#include <MultiStepper.h>
+#include <AccelStepper.h>
+
 #include <QueueArray.h>
+
 #include "Platform.h"
 
 #define RESET 0x01

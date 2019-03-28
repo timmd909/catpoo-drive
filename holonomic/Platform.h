@@ -9,16 +9,15 @@
 
 class Platform : public LifeCycle
 {
+public:
+  static const int NUM_MOTORS = 3;
+
 private:
   float _lastBearing;
   float _lastVX;
   float _lastVY;
 
 protected:
-  Motor* _motors;
-
-  int _numMotors;
-
   /**
    * X velocity (positive = right)
    */
@@ -46,7 +45,7 @@ protected:
   float calculateBearing();
 
 public:
-  Platform(int numMotors, Motor motors[]);
+  Platform();
 
   /**
    * Call once per main loop iteration to update the platform

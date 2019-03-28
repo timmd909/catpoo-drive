@@ -1,6 +1,6 @@
 #include "Platform.h"
 
-Platform::Platform(int numMotors, Motor motors[])
+Platform::Platform(int numMotors, Motor *motors)
 {
   _numMotors = numMotors;
   _motors = motors;
@@ -20,6 +20,8 @@ void Platform::update()
 {
   int i;
 
+  Serial.println("Updating platform");
+
   //
   // Gradually slow the platform
   //
@@ -36,25 +38,43 @@ void Platform::update()
   float angleDelta, speed;
   float linearSpeed = sqrt(_vX * _vX  + _vY * _vY);
   for (i = 0 ; i < _numMotors; i++) {
-    Motor *motor = &_motors[i];
+    Serial.print("Motor ");
+    Serial.print(i);
+    Motor *motor = _motors + i;
+
+    Serial.print(" Angle = ");
+    Serial.print(motor->getAngle());
 
     // calculate the linear motion speed first
     angleDelta = motor->getAngle() - calculateBearing();
+    Serial.print(" angleDelta = ");
+    Serial.println(angleDelta);
+
+    /*
+    Serial.print(" cos(angleDelta) = ");
+    Serial.println(cos(angleDelta));
     speed = (1.0f / cos(angleDelta)) * linearSpeed;
 
     // add in the rotational speed
     speed += _rot;
 
+    Serial.print(" speed = ");
+    Serial.println(speed);
+
     // finally update the motor's speed
     motor->setSpeed(speed);
+
+    */
   }
 
-  //
+/*   //
   // Update the motors internal state
   //
   for (i = 0 ; i < _numMotors; i++) {
+    Serial.print("Motor ");
+    Serial.print(i);
     _motors[i].update();
-  }
+  } */
 
 }
 
@@ -71,6 +91,13 @@ float Platform::getDecayRate()
 
 void Platform::setVelocity(const int xSpeed, const int ySpeed, const int rotation)
 {
+  Serial.print("Updating velocity - ");
+  Serial.print(xSpeed);
+  Serial.print(" - ");
+  Serial.print(ySpeed);
+  Serial.print(" - ");
+  Serial.println(rotation);
+
   _vX = xSpeed;
   _vY = ySpeed;
   _rot = rotation;
@@ -112,6 +139,9 @@ float Platform::calculateBearing()
   _lastVX = _vX;
   _lastVY = _vY;
   _lastBearing = bearing;
+
+  Serial.print("Bearing = ");
+  Serial.println(bearing);
 
   return bearing;
 }
