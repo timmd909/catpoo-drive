@@ -1,10 +1,8 @@
+#include "macros.h"
 #include "Platform.h"
 
-Platform::Platform(int numMotors, Motor *motors)
+Platform::Platform()
 {
-  _numMotors = numMotors;
-  _motors = motors;
-
   _vX = 0;
   _vY = 0;
   _rot = 0;
@@ -37,45 +35,8 @@ void Platform::update()
   //
   float angleDelta, speed;
   float linearSpeed = sqrt(_vX * _vX  + _vY * _vY);
-  for (i = 0 ; i < _numMotors; i++) {
-    Serial.print("Motor ");
-    Serial.print(i);
-    Motor *motor = _motors + i;
 
-    Serial.print(" Angle = ");
-    Serial.print(motor->getAngle());
-
-    // calculate the linear motion speed first
-    angleDelta = motor->getAngle() - calculateBearing();
-    Serial.print(" angleDelta = ");
-    Serial.println(angleDelta);
-
-    /*
-    Serial.print(" cos(angleDelta) = ");
-    Serial.println(cos(angleDelta));
-    speed = (1.0f / cos(angleDelta)) * linearSpeed;
-
-    // add in the rotational speed
-    speed += _rot;
-
-    Serial.print(" speed = ");
-    Serial.println(speed);
-
-    // finally update the motor's speed
-    motor->setSpeed(speed);
-
-    */
-  }
-
-/*   //
-  // Update the motors internal state
-  //
-  for (i = 0 ; i < _numMotors; i++) {
-    Serial.print("Motor ");
-    Serial.print(i);
-    _motors[i].update();
-  } */
-
+  // calcualte the
 }
 
 void Platform::setDecayRate(float decayRate)
@@ -105,11 +66,6 @@ void Platform::setVelocity(const int xSpeed, const int ySpeed, const int rotatio
 
 float Platform::calculateBearing()
 {
-  if (_vX == _lastVX && _vY == _lastVY) {
-    // velocity hasn't changed, return cached bearing
-    return _lastBearing;
-  }
-
   float bearing;
 
   if (!_vX && !_vY) {
@@ -118,14 +74,14 @@ float Platform::calculateBearing()
     bearing = 0.0f;
   } else if (!_vX) {
     if (_vY > 0)
-      bearing = (M_PI/2.0f);
+      bearing = M_PI / 2; // 90 degress
     else
-      bearing = (3.0f * M_PI / 2.0f);
+      bearing = M_PI / 2 * 3; // 270 degrees
   } else if (!_vY) {
     if (_vX > 0)
       bearing = 0.0f;
     else
-      bearing = -M_PI;
+      bearing = M_PI;
   } else {
     // need to do a little trig here
     bearing = atan(_vY/_vX);
@@ -134,11 +90,16 @@ float Platform::calculateBearing()
       // off by 180°, thus we need to:
       bearing += M_PI;
     }
+    if (_vY < 0.0f) {
+      // if velocity is down, then we we need to do another
+      // rotation (this time + 360 deg)
+      bearing += M_PI * 2;
+    }
   }
 
   _lastVX = _vX;
   _lastVY = _vY;
-  _lastBearing = bearing;
+  _lastRot = bearing;
 
   Serial.print("Bearing = ");
   Serial.println(bearing);
