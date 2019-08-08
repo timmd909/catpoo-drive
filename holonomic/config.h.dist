@@ -2,6 +2,7 @@
 #define __CATPOO_CONFIG_H_
 
 #include <Arduino.h>
+#include "macros.h"
 
 //
 // WHEEL SETTINGS
@@ -35,17 +36,56 @@
 // PIN OUTS
 //
 
-#define MOTOR_0_DIR   4
-#define MOTOR_0_STEP  5
-#define MOTOR_0_ANGLE (180.0f * (M_PI/180.0f))
+#define MOTOR_0_DIR   5
+#define MOTOR_0_STEP  6
+#define MOTOR_0_PWR   7
 
-#define MOTOR_1_DIR   6
-#define MOTOR_1_STEP  7
-#define MOTOR_1_ANGLE (300.0f * (M_PI/180.0f))
+#define MOTOR_1_DIR   8
+#define MOTOR_1_STEP  9
+#define MOTOR_1_PWR   10
 
-#define MOTOR_2_DIR   8
-#define MOTOR_2_STEP  9
-#define MOTOR_2_ANGLE (60.0f * (M_PI/180.0f))
+#define MOTOR_2_DIR   11
+#define MOTOR_2_STEP  12
+#define MOTOR_2_PWR   13
+
+#define RANGE_0 A5
+#define RANGE_1 A4
+#define RANGE_2 A3
+#define RANGE_3 A2
+#define RANGE_4 A1
+#define RANGE_5 A0
+
+
+//
+// MOTOR ANGLES
+//
+// The internal axis of movement is oriented w/ X+ going straight out the
+// front when viewed from above. Y+ is to the left. Etc.
+//
+// Positive wheel rotation is clockwise when viewed looking at the front
+// face of the wheel, with the motor in back.
+//
+
+// Front right
+#define MOTOR_0_ANGLE DEG2RAD(30.0f)
+
+// Back
+#define MOTOR_1_ANGLE DEG2RAD(270.0f)
+
+// Front left
+#define MOTOR_2_ANGLE DEG2RAD(150.0f)
+
+//
+// RANGE FINDER ANGLES
+//
+// Orientation is same as with the motor angles.
+//
+#define RANGE_0_ANGLE DEG2RAD(0.0f)
+#define RANGE_1_ANGLE DEG2RAD(60.0f)
+#define RANGE_2_ANGLE DEG2RAD(120.0f)
+#define RANGE_3_ANGLE DEG2RAD(180.0f)
+#define RANGE_4_ANGLE DEG2RAD(240.0f)
+#define RANGE_5_ANGLE DEG2RAD(300.0f)
 
 // command line compilation issue workaround:
 #ifndef LED_BUILTIN
