@@ -7,6 +7,8 @@
 #include <Arduino.h>
 #include "config.h"
 
+#include <AccelStepper.h>
+
 void setup()
 {
   // Wait a short bit to give Arduino IDE time to upload new sketches
@@ -15,7 +17,6 @@ void setup()
 
   Serial.println("INIT COMPLETE");
 }
-
 
 void loop()
 {
