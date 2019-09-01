@@ -8,6 +8,6 @@ AVRDUDE_ARD_BAUDRATE = 57600
 # VARIANT = mega
 MCU = atmega32u4
 
-USER_LIB_PATH := $(realpath ../libraries)
+USER_LIB_PATH := $(realpath ./lib)
 
 include /usr/share/arduino/Arduino.mk

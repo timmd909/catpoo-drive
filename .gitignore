@@ -1,4 +1,2 @@
-libraries/
-**/build-leonardo
-**/build-uno
-
+config.h
+build-leonardo
