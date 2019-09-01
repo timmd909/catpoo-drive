@@ -1,0 +1,3 @@
+[submodule "lib/AccelStepper"]
+	path = lib/AccelStepper
+	url = git@github.com:timmd909/AccelStepper.git
