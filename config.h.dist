@@ -5,6 +5,12 @@
 #include "macros.h"
 
 //
+// I2C
+//
+
+#define I2C_ADDRESS 0x53
+
+//
 // WHEEL SETTINGS
 //
 
@@ -68,7 +74,7 @@
 // Back right
 #define RANGE_3_ANGLE DEG2RAD(300.0f)
 // Right
-#define RANGE_4_ANGLE DEG2RAD(0f)
+#define RANGE_4_ANGLE DEG2RAD(0.0f)
 // Front right
 #define RANGE_5_ANGLE DEG2RAD(60.0f)
 

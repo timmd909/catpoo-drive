@@ -1,5 +1,5 @@
 # ARDUINO_LIBS = AccelStepper QueueArray Wire SoftwareSerial
-ARDUINO_LIBS = AccelStepper
+ARDUINO_LIBS = AccelStepper Wire
 BOARD_TAG = leonardo
 MONITOR_PORT = /dev/ttyACM0
 # MONITOR_PORT = /dev/arduino

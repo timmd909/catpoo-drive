@@ -36,6 +36,12 @@ public:
    */
   void stop();
 
+  /**
+   * Initialize the stepper motors. Must be called once before using
+   * the motors.
+   */
+  virtual void init() = 0;
+
 };
 
 #endif

@@ -13,6 +13,8 @@ public:
 
   Platform3();
   ~Platform3();
+
+  void init();
 };
 
 #endif
