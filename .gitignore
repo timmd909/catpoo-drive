@@ -1,4 +1,1 @@
-libraries/
-**/build-leonardo
-**/build-uno
-
+node_modules/
