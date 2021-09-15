@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "CATPOO robot drive software",
   "private": true,
-  "main": "src/main.js",
+  "main": "drive.js",
   "scripts": {
+    "start": "node drive.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
