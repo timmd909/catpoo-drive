@@ -6,8 +6,6 @@
 
 'use strict';
 
-const pins = require('./src/gpio-pins');
-console.log('PINS =', pins)
 const gpio = require('rpi-gpio');
 
 gpio.setMode(gpio.MODE_BCM);
@@ -34,7 +32,7 @@ setTimeout(function () {
   gpio.write(pins.WHEEL_3_ENABLE, false);
   gpio.write(pins.WHEEL_4_ENABLE, false);
 
-	setTimeout(function () {
+  setTimeout(function () {
     console.log('Done');
     process.exit(0);
   }, 1000);
