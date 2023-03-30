@@ -4,6 +4,8 @@ const term = require('terminal-kit').terminal;
 const constants = require('./constants.js');
 const packageJson = require('../package.json');
 
+// process.exit();
+
 var model = require('./model.js');
 
 // default the cols/rows to the minimum until the screen is initialized
@@ -26,17 +28,29 @@ function renderTerminalTooSmall() {
 	term.red.bold(errorMessageCenter);
 }
 
+// function renderFrame(startX, startY, width, height, title) {
+// 	var currX = startX;
+// 	var currY = startY;
+// 	var i;
+//
+// 	for (i = 0; i < width; i++) {
+//
+// 	}
+//
+// 	term.moveTo()
+// }
+
 function renderStaticParts() {
 	term.clear();
 
 	term.moveTo(0, 0);
 	for (let i = 0; i < NUM_COLS; i++) {
-		term.bgWhite(' ');
+		term.bgBlue(' ');
 	}
 
 	term.moveTo(0, 0);
-	term.bgWhite.black('CATPOO ');
-	term.bgWhite.green.bold(packageJson.version);
+	term.bgBlue.white.bold('CATPOO ');
+	term.bgBlue.yellow.bold(packageJson.version);
 
 	// terminal size is good enough check
 	if (NUM_COLS < constants.TERMINAL_MIN_COLS || NUM_ROWS < constants.TERMINAL_MIN_ROWS) {
@@ -45,9 +59,7 @@ function renderStaticParts() {
 		return;
 	}
 
-	// terminal is large enough, let's start drawing the borders
-
-
+	new termRect(2, 4, 8, 16);
 }
 
 function render() {
